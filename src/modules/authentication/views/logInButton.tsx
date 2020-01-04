@@ -17,8 +17,8 @@ export const LogInButton: React.FC = () => {
     const buttonText: string = isSignedIn ? 'Sign Out' : 'Sign in with Google';
     return (
         <div>
-            <button onClick={() => onSignInClick()} className="ui red google button">
-                <i className="google icon" />
+            <button className="ui google button" onClick={() => onSignInClick()}>
+                <i className="red google icon" />
                 {buttonText}
             </button>
         </div>

@@ -1,1 +1,2 @@
-export * from 'modules/authentication/views/loginButton';
+export * from 'modules/authentication/views/logInButton';
+export * from 'modules/authentication/views/logInPage';

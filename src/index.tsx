@@ -12,7 +12,6 @@ const composeEnhancers = (window as any)['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__']
 const reducers = combineReducers({
     auth: authReducer
 });
-// const composeEnhancers = compose;
 const store = createStore(reducers, composeEnhancers(applyMiddleware(reduxThunk)));
 
 ReactDOM.render(
