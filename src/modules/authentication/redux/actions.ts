@@ -1,5 +1,6 @@
-import { auth, googleAuth } from 'modules/authentication';
 import { ThunkDispatch } from 'redux-thunk';
+
+import { auth, googleAuth } from 'modules/authentication';
 
 export const SIGN_IN = 'SIGN_IN';
 export const SIGN_OUT = 'SIGN_OUT';
