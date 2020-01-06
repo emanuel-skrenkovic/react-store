@@ -1,44 +1,64 @@
 import { ThunkDispatch } from 'redux-thunk';
 
-import { auth, googleAuth } from 'modules/authentication';
+import { ApplicationState, ApplicationUser, UserRole } from 'models';
+import { 
+    db,
+    auth, 
+    googleAuth, 
+    SignInAction, 
+    SignOutAction, 
+    RegisterAction ,
+    SIGN_IN,
+    SIGN_OUT,
+    REGISTER
+} from 'modules/authentication';
 
-export const SIGN_IN = 'SIGN_IN';
-export const SIGN_OUT = 'SIGN_OUT';
+export const registerUser = (email: string, password: string) => async (dispatch: ThunkDispatch<any, void, RegisterAction>, getState: () => ApplicationState) => {
+    const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+    // TODO: set user role
 
-export interface SignInAction {
-    type: typeof SIGN_IN;
-    payload: string
+    dispatch({ type: REGISTER });
+
+    signIn(dispatch, userCredential);
 }
 
-export interface SignOutAction {
-    type: typeof SIGN_OUT;
-}
-
-export type AuthenticationAction = SignInAction | SignOutAction;
-
-// TODO: refactor - remove code repetition between sign in types
-export const signInWithEmailAndPassword = (email: string, password: string) => async (dispatch: ThunkDispatch<any, void, SignInAction>, getState: () => any) => {
+// TODO: refactor - remove code repetition between auth types
+export const signInWithEmailAndPassword = (email: string, password: string) => async (dispatch: ThunkDispatch<any, void, SignInAction>, getState: () => ApplicationState) => {
     const userCredential = await auth.signInWithEmailAndPassword(email, password);
 
     signIn(dispatch, userCredential);
 };
 
-export const signInWithGoogle = () => async (dispatch: ThunkDispatch<any, void, SignInAction>, getState: () => any) => {
+export const signInWithGoogle = () => async (dispatch: ThunkDispatch<any, void, SignInAction>, getState: () => ApplicationState) => {
     const userCredential: firebase.auth.UserCredential = await auth.signInWithPopup(googleAuth);
 
     signIn(dispatch, userCredential);
 };
 
-const signIn = (dispatch: ThunkDispatch<any, void, SignInAction>, userCredential: firebase.auth.UserCredential) => {
+const signIn = async (dispatch: ThunkDispatch<any, void, SignInAction>, userCredential: firebase.auth.UserCredential) => {
     let userId: string  = '';
+    let username: string = '';
     if (userCredential.user) {
         userId = userCredential.user.uid;
+        username = userCredential.user.displayName || '';
     }
 
-    dispatch({ type: SIGN_IN, payload: userId }); 
+    const userProfile = await db.ref(`/profiles/${userId}`).once('value');
+    const userRoleValue = userProfile.val().role as string;
+    console.log(userProfile);
+    console.log(userRoleValue);
+    // const userRole: UserRole = UserRole[userRoleValue];
+
+    const user: ApplicationUser = {
+        userId: userId,
+        username: username,
+        role: UserRole.User
+    };
+
+    dispatch({ type: SIGN_IN, payload: user }); 
 };
 
-export const signOut = () => async (dispatch: ThunkDispatch<any, void, SignOutAction>, getState: () => any) => {
+export const signOut = () => async (dispatch: ThunkDispatch<any, void, SignOutAction>, getState: () => ApplicationState) => {
     await auth.signOut();
 
     dispatch({ type: SIGN_OUT });

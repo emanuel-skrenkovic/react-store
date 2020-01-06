@@ -1,15 +1,8 @@
-export const getUserId = (state: any): string => {
-    return state.userId;
-};
+import { AuthenticationState } from 'models';
 
-interface AuthInfo {
-    userId: string;
-    isSignedIn: boolean;
-}
-
-export const selectAuthInfo = (state: any): AuthInfo => {
+export const selectAuthInfo = (state: any): AuthenticationState => {
     return { 
-        userId: state.auth.userId || '',
+        user: state.auth.user,
         isSignedIn: state.auth.isSignedIn || false
     };
 }
