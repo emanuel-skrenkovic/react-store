@@ -2,8 +2,8 @@ import { ThunkDispatch } from 'redux-thunk';
 
 import { ApplicationState, ApplicationUser, UserRole } from 'models';
 import { 
-    db,
     auth, 
+    store,
     googleAuth, 
     SignInAction, 
     SignOutAction, 
@@ -14,8 +14,15 @@ import {
 } from 'modules/authentication';
 
 export const registerUser = (email: string, password: string) => async (dispatch: ThunkDispatch<any, void, RegisterAction>, getState: () => ApplicationState) => {
-    const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+    const userCredential: firebase.auth.UserCredential = await auth.createUserWithEmailAndPassword(email, password);
     // TODO: set user role
+
+    if (userCredential.user) {
+        const userId: string = userCredential.user.uid;
+        await store.collection('profiles')
+            .doc(userId)
+            .set({ role: UserRole.User });
+    }
 
     dispatch({ type: REGISTER });
 
@@ -35,24 +42,29 @@ export const signInWithGoogle = () => async (dispatch: ThunkDispatch<any, void, 
     signIn(dispatch, userCredential);
 };
 
+// TODO: refactor the whole thing
 const signIn = async (dispatch: ThunkDispatch<any, void, SignInAction>, userCredential: firebase.auth.UserCredential) => {
     let userId: string  = '';
     let username: string = '';
+
     if (userCredential.user) {
         userId = userCredential.user.uid;
         username = userCredential.user.displayName || '';
     }
 
-    const userProfile = await db.ref(`/profiles/${userId}`).once('value');
-    const userRoleValue = userProfile.val().role as string;
-    console.log(userProfile);
-    console.log(userRoleValue);
-    // const userRole: UserRole = UserRole[userRoleValue];
+    const profileDocumentSnapshot = await store.collection('profiles').doc(userId).get();
+    const profileDocument = profileDocumentSnapshot.data();
+
+    let userRole: UserRole = UserRole.User;
+    if (profileDocument) {
+        const { role } = profileDocument;
+        userRole = UserRole[role as keyof typeof UserRole];
+    }
 
     const user: ApplicationUser = {
         userId: userId,
         username: username,
-        role: UserRole.User
+        role: userRole
     };
 
     dispatch({ type: SIGN_IN, payload: user }); 
