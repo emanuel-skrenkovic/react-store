@@ -1,1 +1,2 @@
-export * from 'modules/authentication/views/logInPage';
+export * from 'modules/authentication/views/signInView';
+export * from './registerView';

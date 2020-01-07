@@ -4,7 +4,7 @@ import { Router, Switch, Route } from 'react-router-dom';
 
 import { history } from 'models/history';
 import { Header, ProtectedRoute } from 'components';
-import { LogInPage, selectAuthInfo } from 'modules/authentication';
+import { SignInView, RegisterView, selectAuthInfo } from 'modules/authentication';
 
 const App: React.FC = () => {
     const { isSignedIn } = useSelector(selectAuthInfo);
@@ -15,7 +15,8 @@ const App: React.FC = () => {
                 <Route path="/" component={Header} />
                 <Switch>
                     <Route path="/home" />
-                    <Route path="/login" exact component={LogInPage} />
+                    <Route path="/login" exact component={SignInView} />
+                    <Route path="/register" exact component={RegisterView} />
                     <Route path="/listing" exact />
                     <Route path="/cart" exact />
                     <Route path="/faq" exact />
