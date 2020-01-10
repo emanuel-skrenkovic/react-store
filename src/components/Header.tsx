@@ -1,13 +1,15 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { selectAuthInfo } from 'modules/authentication';
+import { selectAuthInfo, signOut } from 'modules/authentication';
 import { UserRole } from 'models';
 
 export const Header: React.FC = () => {
     const { isSignedIn, user } = useSelector(selectAuthInfo);
     const { username } = user || {};
+
+    const dispatch = useDispatch();
 
     const renderAdmin = () => {
         if (!user) {
@@ -44,7 +46,9 @@ export const Header: React.FC = () => {
             {renderAdmin()}
             <div className="right menu">
                 <Link to="/cart" className="item">Cart</Link>
-                {(isSignedIn && username) ? username : ''}
+                {isSignedIn 
+                    ? <button className="ui button" onClick={() => dispatch(signOut())}>Sign Out</button> 
+                    : null}
             </div>
         </div>
     );
