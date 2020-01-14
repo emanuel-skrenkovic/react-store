@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import reduxThunk from 'redux-thunk';
 
 import { authReducer } from 'modules/authentication';
+import { initialState } from 'models';
 
 import App from './components/App';
 
@@ -12,7 +13,7 @@ const composeEnhancers = (window as any)['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__']
 const reducers = combineReducers({
     auth: authReducer
 });
-const store = createStore(reducers, composeEnhancers(applyMiddleware(reduxThunk)));
+const store = createStore(reducers, initialState, composeEnhancers(applyMiddleware(reduxThunk)));
 
 ReactDOM.render(
     <Provider store={store}>
