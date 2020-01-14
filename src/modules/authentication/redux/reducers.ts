@@ -5,7 +5,9 @@ const INITIAL_STATE: AuthenticationState = {
     isSignedIn: false
 };
 
-export const authReducer = (state: AuthenticationState = INITIAL_STATE, action: AuthenticationAction): AuthenticationState => {
+export const authReducer = (
+    state: AuthenticationState = INITIAL_STATE,
+    action: AuthenticationAction): AuthenticationState => {
     switch (action.type) {
         case SIGN_IN:
             return { ...state, isSignedIn: true, user: action.payload };

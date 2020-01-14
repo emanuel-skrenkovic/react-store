@@ -1,8 +1,10 @@
-import { AuthenticationState } from 'models';
+import { createSelector } from 'reselect';
 
-export const selectAuthInfo = (state: any): AuthenticationState => {
+import { ApplicationState, AuthenticationState } from 'models';
+
+const selectAuthInfo = (state: ApplicationState): AuthenticationState => {
     return { 
-        user: state.auth.user,
-        isSignedIn: state.auth.isSignedIn || false
+        user: state?.auth?.user || undefined,
+        isSignedIn: state?.auth?.isSignedIn || false
     };
-}
+};

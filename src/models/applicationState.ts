@@ -17,10 +17,12 @@ export interface AuthenticationState {
 }
 
 export interface Category {
+    id: string;
     name: string;
 }
 
 export interface ShopItem {
+    id: string;
     name: string;
     category: string;
     price: number;
