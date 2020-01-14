@@ -13,7 +13,7 @@ export const AuthenticationForm: React.FC<AuthenticationFormProps> = (props) => 
         event.preventDefault();
 
         props.onFormSubmit(email, password);
-    }
+    };
 
     return (
         <div className="ui container">

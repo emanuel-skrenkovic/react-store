@@ -19,27 +19,26 @@ export const Header: React.FC = () => {
         if (user.role === UserRole.Admin) {
             return <Link to="/admin" className="item">Administration</Link>;
         }
-    }
+    };
 
     const renderAuth = () => {
         if (user) {
             return <span>{username}</span>;
         }
 
-        // disgusting
         return (
             <div className="ui center aligned">
-                <Link to="/login">Sign in&nbsp;</Link>
-                or&nbsp;
+                <Link to="/login">Sign in</Link>
+                {' '}or{' '}
                 <Link to="/register">register</Link>
                 !
             </div>
         );
-    }
+    };
 
     return (
         <div className="ui secondary pointing menu">
-            Hi! &nbsp;{renderAuth()}
+            Hi!{' '}{renderAuth()}
             <Link to="/home" className="item">Home</Link>
             <Link to="/listing" className="item">Listing</Link>
             <Link to="/faq" className="item">FAQ</Link>
