@@ -1,16 +1,26 @@
+import * as firebase from 'firebase';
 import { ThunkDispatch } from 'redux-thunk';
 
 import { ApplicationState, ApplicationUser, UserRole } from 'models';
-import { signIn, signOut, registerUser, updateUser, AuthenticationAction } from 'modules/authentication';
+import {
+    signIn,
+    signOut,
+    registerUser,
+    updateUser,
+    AuthenticationAction,
+    auth,
+    googleAuth,
+    store
+} from 'modules/authentication';
 
-export const signInWithEmailAndPassword = (email: string, password: string) =>
+export const attemptSignInWithEmailAndPassword = (email: string, password: string) =>
     async (dispatch: ThunkDispatch<ApplicationState, void, AuthenticationAction>) => {
         const userCredential = await auth.signInWithEmailAndPassword(email, password);
 
         await attemptSignIn(dispatch, userCredential);
 };
 
-export const signInWithGoogle = () =>
+export const attemptSignInWithGoogle = () =>
     async (dispatch: ThunkDispatch<ApplicationState, void, AuthenticationAction>) => {
         const userCredential: firebase.auth.UserCredential = await auth.signInWithPopup(googleAuth);
 
