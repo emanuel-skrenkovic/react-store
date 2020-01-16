@@ -1,5 +1,3 @@
-import { createSelector } from 'reselect';
-
 import { ApplicationState, AuthenticationState } from 'models';
 
 export const selectAuthInfo = (state: ApplicationState): AuthenticationState => {
