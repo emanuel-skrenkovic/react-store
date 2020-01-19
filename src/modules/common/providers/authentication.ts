@@ -4,7 +4,7 @@ import { ApplicationUser, UserRole } from "models";
 import { auth, store, googleAuth, getDocument } from 'modules/common/providers';
 
 
-export const signInWithGoogle = async () => {
+export const signInWithGoogle = async (): Promise<ApplicationUser> => {
     const userCredential: firebase.auth.UserCredential = await auth.signInWithPopup(googleAuth);
 
     return signIn(userCredential);
@@ -16,7 +16,7 @@ export const signInWithEmailAndPassword = async (email: string, password: string
     return signIn(userCredential);
 };
 
-export const signOut = async () => {
+export const signOut = async (): Promise<void> => {
     return auth.signOut();
 };
 
@@ -35,7 +35,7 @@ const signIn = async (userCredential: firebase.auth.UserCredential): Promise<App
     return { userId, username, role };
 };
 
-export const registerUser = async (email: string, password: string, role: UserRole) => {
+export const registerUser = async (email: string, password: string, role: UserRole): Promise<void> => {
     const userCredential: firebase.auth.UserCredential = await auth.createUserWithEmailAndPassword(email, password);
 
     if (userCredential.user) {
