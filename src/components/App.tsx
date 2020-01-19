@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { Router, Switch, Route } from 'react-router-dom';
 
 import { history } from 'models/history';
-import { Header, ProtectedRoute } from 'components';
+import { Header, ProtectedRoute } from 'modules/navigation';
 import { SignInView, RegisterView, selectAuthInfo } from 'modules/authentication';
 
 const App: React.FC = () => {

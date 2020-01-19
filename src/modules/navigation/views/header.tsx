@@ -35,7 +35,7 @@ export const Header: React.FC = () => {
             {user && user.role === UserRole.Admin && <Link to="/admin" className="item">Administration</Link>}
             <div className="right menu">
                 <Link to="/cart" className="item">Cart</Link>
-                {isSignedIn 
+                {isSignedIn
                     ? <button className="item" onClick={() => dispatch(attemptSignOut())}>Sign Out</button>
                     : null}
             </div>
