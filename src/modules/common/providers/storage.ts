@@ -1,6 +1,6 @@
 import * as firebase from "firebase/app";
 import 'firebase/firestore';
-import { store } from "common/providers";
+import { store } from "modules/common/providers";
 
 export const getDocument = async <T>(collection: string, documentReference: string)
     : Promise<T> => {

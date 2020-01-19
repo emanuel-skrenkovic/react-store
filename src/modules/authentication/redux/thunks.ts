@@ -1,7 +1,7 @@
 import { ThunkDispatch } from 'redux-thunk';
 
 import { ApplicationState, ApplicationUser, UserRole } from 'models';
-import * as auth from 'common/providers';
+import * as auth from 'modules/common/providers';
 import {
     signIn,
     signOut,

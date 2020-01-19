@@ -1,7 +1,7 @@
 import * as firebase from "firebase";
 
 import { ApplicationUser, UserRole } from "models";
-import { auth, store, googleAuth, getDocument } from 'common/providers';
+import { auth, store, googleAuth, getDocument } from 'modules/common/providers';
 
 
 export const signInWithGoogle = async () => {
