@@ -4,8 +4,8 @@ import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import reduxThunk from 'redux-thunk';
 
-import { authReducer } from 'modules/authentication';
 import { initialState } from 'models';
+import { authReducer } from 'modules/authentication';
 
 import App from './components/App';
 

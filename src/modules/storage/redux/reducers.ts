@@ -1,4 +1,4 @@
-import { AuthenticationState,} from 'models';
+import { AuthenticationState } from 'models';
 import { AuthenticationAction, SIGN_IN, SIGN_OUT } from 'modules/authentication';
 
 const INITIAL_STATE: AuthenticationState = {

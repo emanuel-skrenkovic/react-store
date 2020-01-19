@@ -1,8 +1,8 @@
+// TODO: pull from app config?
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
 
-// TODO: pull from app config?
 const config = {
     apiKey: 'AIzaSyDpyqsFjlekVMNqkX8Hq9FzpHooV4vgP_o',
     authDomain: 'react-store-8b075.firebaseapp.com',

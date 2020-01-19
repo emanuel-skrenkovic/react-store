@@ -8,7 +8,7 @@ export enum UserRole {
 export interface ApplicationUser {
     userId: string;
     username: string;
-    role: UserRole; 
+    role?: UserRole;
 }
 
 export interface AuthenticationState {
@@ -17,18 +17,28 @@ export interface AuthenticationState {
 }
 
 export interface Category {
+    id: string;
     name: string;
 }
 
 export interface ShopItem {
+    id: string;
     name: string;
     category: string;
     price: number;
 }
 
+type Dictionary<TKey extends string | number, TItem> = {
+    [key in TKey]: TItem;
+}
+
+export interface Categories extends Dictionary<string, Category> { }
+
+export interface ShopItems extends Dictionary<string, ShopItem> { }
+
 export interface Listing {
-    categories: Category[];
-    items: ShopItem[];
+    categories: Categories
+    items: ShopItems;
 }
 
 export interface FirebaseConfiguration {

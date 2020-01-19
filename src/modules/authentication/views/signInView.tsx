@@ -4,22 +4,22 @@ import { useDispatch } from 'react-redux';
 import { history } from 'models/history';
 import { 
     AuthenticationForm,
-    signInWithEmailAndPassword, 
-    signInWithGoogle, 
+    attemptSignInWithEmailAndPassword,
+    attemptSignInWithGoogle,
 } from 'modules/authentication';
 
 export const SignInView: React.FC = () => {
     const dispatch = useDispatch();
 
     const onFormSubmit = (email: string, password: string) => {
-        dispatch(signInWithEmailAndPassword(email, password));
+        dispatch(attemptSignInWithEmailAndPassword(email, password));
 
         // TODO: handle login failure
         history.push('/');
     };
 
     const onGoogleSignInClick = () => {
-        dispatch(signInWithGoogle());
+        dispatch(attemptSignInWithGoogle());
         history.push('/');
     };
     
