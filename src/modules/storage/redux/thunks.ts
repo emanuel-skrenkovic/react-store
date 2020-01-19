@@ -57,13 +57,13 @@ const storeDocument = async <T>(collection: string, document: T): Promise<void> 
     await store.collection(collection).add(document);
 };
 
-const updateDocument = async <T>(collection: string, document: T): Promise<void> => {
+// const updateDocument = async <T>(collection: string, document: T): Promise<void> => {
     // TODO: example code below
     // const userId: string = userCredential.user.uid;
     // await store.collection('profiles')
     //     .doc(userid)
     //     .set({ role: userrole.user });
-};
+// };
 
 const deleteDocument = async (collection: string, documentId: string): Promise<void> => {
     await store.collection(collection).doc(documentId).delete();
@@ -143,12 +143,13 @@ export const attemptGetUser = (userId: string) =>
 
 export const attemptAddUser = (user: ApplicationUser) =>
     async (dispatch: ThunkDispatch<ApplicationState, void, StorageAction>) => {
-    await storeDocument<ApplicationUser>('profiles', user);
+        await storeDocument<ApplicationUser>('profiles', user);
 
-    dispatch(addUser(user));
+        dispatch(addUser(user));
 };
 
 export const attemptUpdateUser = (user: ApplicationUser) =>
     async (dispatch: ThunkDispatch<ApplicationState, void, StorageAction>) => {
-
+        // TODO
+        dispatch(updateUser(user));
 };

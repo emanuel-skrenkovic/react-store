@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { selectAuthInfo, signOut } from 'modules/authentication';
+import { selectAuthInfo, attemptSignOut } from 'modules/authentication';
 import { UserRole } from 'models';
 
 export const Header: React.FC = () => {
@@ -36,7 +36,7 @@ export const Header: React.FC = () => {
             <div className="right menu">
                 <Link to="/cart" className="item">Cart</Link>
                 {isSignedIn 
-                    ? <button className="item" onClick={() => dispatch(signOut())}>Sign Out</button>
+                    ? <button className="item" onClick={() => dispatch(attemptSignOut())}>Sign Out</button>
                     : null}
             </div>
         </div>
