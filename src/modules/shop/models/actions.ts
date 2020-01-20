@@ -25,7 +25,7 @@ export interface GetItemsAction {
     payload: ShopItems;
 }
 
-export type StorageAction =
+export type ShopAction =
     GetCategoryAction
     | GetCategoriesAction
     | GetItemAction

@@ -1,4 +1,8 @@
-import * as firebase from "firebase";
+import { ShopFilter } from 'modules/shop';
+
+export interface IndexedEntity {
+    id: string;
+}
 
 export enum UserRole {
     User = 'User',
@@ -16,13 +20,11 @@ export interface AuthenticationState {
     user?: ApplicationUser;
 }
 
-export interface Category {
-    id: string;
+export interface Category extends IndexedEntity {
     name: string;
 }
 
-export interface ShopItem {
-    id: string;
+export interface ShopItem extends IndexedEntity {
     name: string;
     category: string;
     price: number;
@@ -36,9 +38,10 @@ export interface Categories extends Dictionary<string, Category> { }
 
 export interface ShopItems extends Dictionary<string, ShopItem> { }
 
-export interface Listing {
+export interface Shop {
     categories: Categories
     items: ShopItems;
+    filter: ShopFilter;
 }
 
 export interface FirebaseConfiguration {
@@ -53,22 +56,5 @@ export interface ApplicationSettings {
 export interface ApplicationState {
     appSettings: ApplicationSettings;
     auth?: AuthenticationState;
-    listing?: Listing;
+    shop?: Shop;
 }
-
-export const initialState: ApplicationState = {
-    appSettings: {
-        firebase: {
-            appName: 'react-store',
-            config: {
-                apiKey: 'AIzaSyDpyqsFjlekVMNqkX7Hq9FzpHooV4vgP_o',
-                authDomain: 'react-store-9b075.firebaseapp.com',
-                projectId: 'react-store-9b075',
-                signInOptions: [
-                    firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-                    firebase.auth.EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD
-                ]
-            }
-        }
-    }
-};
