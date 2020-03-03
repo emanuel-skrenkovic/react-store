@@ -1,4 +1,4 @@
-import { ShopFilter } from 'modules/shop';
+import { Filter } from 'modules/shop';
 
 export interface IndexedEntity {
     id: string;
@@ -30,7 +30,7 @@ export interface ShopItem extends IndexedEntity {
     price: number;
 }
 
-type Dictionary<TKey extends string | number, TItem> = {
+export type Dictionary<TKey extends string | number, TItem> = {
     [key in TKey]: TItem;
 }
 
@@ -41,7 +41,7 @@ export interface ShopItems extends Dictionary<string, ShopItem> { }
 export interface Shop {
     categories: Categories
     items: ShopItems;
-    filter: ShopFilter;
+    filter: Filter;
 }
 
 export interface FirebaseConfiguration {

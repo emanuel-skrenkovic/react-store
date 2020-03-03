@@ -1,11 +1,11 @@
 import { Category } from 'models';
 
 export enum SortOrder {
-    PriceLowest,
-    PriceHighest
+    PriceLowest = 'PriceLowest',
+    PriceHighest = 'PriceHighest'
 }
 
-export interface ShopFilter {
+export interface Filter {
     sortOrder: SortOrder;
     categories: Category[];
     searchString: string;

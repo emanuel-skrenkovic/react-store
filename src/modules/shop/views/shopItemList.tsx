@@ -19,9 +19,11 @@ export const ShopItemList: React.FC<ShopItemListProps> = (props: ShopItemListPro
         );
     };
 
-    return (
-        <div className="ui celled list">
-            {items && renderItems()}
-        </div>
-    );
+    return items
+        ? (
+            <div className="ui celled list">
+                {renderItems()}
+            </div>
+        )
+        : null;
 };
