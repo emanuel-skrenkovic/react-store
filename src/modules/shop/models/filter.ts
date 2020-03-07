@@ -7,6 +7,12 @@ export enum SortOrder {
 
 export interface Filter {
     sortOrder: SortOrder;
-    categories: Category[];
+    category: string;
     searchString: string;
+}
+
+export interface ShopFilterProps {
+    categories: Category[];
+    onSubmit: (filter: Filter) => void;
+    initialFilter?: Filter;
 }

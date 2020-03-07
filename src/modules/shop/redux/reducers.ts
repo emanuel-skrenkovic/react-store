@@ -6,7 +6,7 @@ const INITIAL_STATE: Shop = {
     categories: {},
     filter: {
         sortOrder: SortOrder.PriceLowest,
-        categories: [],
+        category: '',
         searchString: ''
     }
 };

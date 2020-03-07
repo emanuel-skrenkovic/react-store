@@ -1,33 +1,35 @@
-import React, { useState, FormEvent } from 'react';
+import React from 'react';
+import { useDispatch } from 'react-redux';
 
 import { ShopItem, Category } from 'models';
-import { ShopFilter, ShopItemList, useShop, SortOrder } from 'modules/shop';
+import {
+    ShopFilter,
+    ShopItemList,
+    useShop,
+    useShopFilter,
+    updateShopFilter,
+    Filter
+} from 'modules/shop';
 
 export const ShopView: React.FC = () => {
-    const [sortOrder, setSortOrder] = useState(SortOrder.PriceLowest);
     const [categories, items] = useShop();
+    const [filter] = useShopFilter();
 
     const categoriesArr: Category[] = Object.values(categories);
     const itemsArr: ShopItem[] = Object.values(items);
 
-    const onSortOrderChanged = (e: FormEvent<HTMLSelectElement>) => {
-        e.preventDefault();
+    const dispatch = useDispatch();
 
-        const selectedSortOrder: SortOrder = SortOrder[e.currentTarget.value as keyof typeof SortOrder];
-        setSortOrder(selectedSortOrder);
+    const onFilterSubmit = (filter: Filter) => {
+        dispatch(updateShopFilter(filter));
     };
 
     return (
         <div className="ui container">
-            <label>Sort By:</label>
-            <select
-                className="ui dropdown"
-                value={sortOrder}
-                onChange={onSortOrderChanged}>
-                <option value={SortOrder.PriceLowest}>Price: Lowest</option>
-                <option value={SortOrder.PriceHighest}>Price: Highest</option>
-            </select>
-            <ShopFilter />
+            <ShopFilter
+                categories={categoriesArr}
+                initialFilter={filter}
+                onSubmit={onFilterSubmit} />
             <ShopItemList items={itemsArr} />
         </div>
     );
