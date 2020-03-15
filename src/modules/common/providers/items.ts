@@ -11,7 +11,7 @@ export const fetchItemById = async (id: string): Promise<ShopItem> => {
         .doc(id)
         .get();
 
-    return documentData as ShopItem;
+    return documentData.data() as ShopItem;
 };
 
 export const fetchItems = async (): Promise<ShopItem[]> => {

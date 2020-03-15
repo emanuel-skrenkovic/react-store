@@ -40,8 +40,11 @@ const signIn = async (userCredential: firebase.auth.UserCredential): Promise<App
         username = userCredential.user.displayName || '';
     }
 
-    const documentData: firebase.firestore.DocumentData = await store.collection('users').doc(userId).get();
-    const user: ApplicationUser = documentData as ApplicationUser;
+    const documentData: firebase.firestore.DocumentData = await store.collection('profiles')
+        .doc(userId)
+        .get();
+
+    const user: ApplicationUser = documentData.data() as ApplicationUser;
     const { role } = user;
 
     return { userId, username, role };
