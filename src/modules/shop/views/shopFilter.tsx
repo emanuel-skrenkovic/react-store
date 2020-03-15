@@ -5,17 +5,26 @@ import { ShopFilterProps } from 'modules/shop';
 
 export const ShopFilter: React.FC<ShopFilterProps> =
     ({ initialFilter, categories, onSubmit }: ShopFilterProps) => {
-    const [searchString, setSearchString] = useState(initialFilter ? initialFilter.searchString : '');
-    const [sortOrder, setSortOrder] = useState(initialFilter ? initialFilter.sortOrder : SortOrder.PriceLowest);
-    const [category, setCategory] = useState(initialFilter ? initialFilter.category : '');
+
+    const [searchString, setSearchString] = useState(initialFilter.searchString);
+    const [sortOrder, setSortOrder] = useState(initialFilter.sortOrder);
+    const [category, setCategory] = useState(initialFilter.category);
+    const [pageNumber] = useState(initialFilter.pageNumber);
+    const [pageSize] = useState(initialFilter.pageSize);
 
     const onClickSubmitButton = (event: React.SyntheticEvent ) => {
         event.preventDefault();
 
+        // TODO: change to update only the changed values instead of recreate
+        // the entire filter object.
+        // This will be more relevant when the search bar is moved to the
+        // application header and paging is moved to a separate component.
         const filter = {
             sortOrder: sortOrder,
             searchString: searchString,
-            category: category
+            category: category,
+            pageNumber: pageNumber,
+            pageSize: pageSize
         } as Filter;
 
         onSubmit(filter);

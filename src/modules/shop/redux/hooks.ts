@@ -24,10 +24,8 @@ export const useShop = (filter: Filter | undefined): Dictionary<string, any>[] =
     return [categories, items];
 };
 
-export const useShopFilter = (): Array<Filter | undefined> => {
-    const filter: Filter | undefined = useSelector((state: ApplicationState) => {
-        return state.shop ? state.shop.filter : undefined
-    });
+export const useShopFilter = (): Array<Filter> => {
+    const filter: Filter = useSelector((state: ApplicationState) => state.shop.filter);
 
     return [filter];
 };

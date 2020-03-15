@@ -66,6 +66,6 @@ export interface ApplicationSettings {
 
 export interface ApplicationState {
     appSettings: ApplicationSettings;
-    auth?: AuthenticationState;
-    shop?: Shop;
+    auth: AuthenticationState;
+    shop: Shop;
 }

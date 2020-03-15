@@ -24,7 +24,7 @@ export const fetchItems = async (): Promise<ShopItem[]> => {
 export const filterItems = async (filter: Filter): Promise<ShopItem[]> => {
     let documentData: firebase.firestore.DocumentData = store.collection(ITEMS_COLLECTION);
 
-    const { searchString, category, sortOrder } = filter;
+    const { searchString, category, sortOrder, pageNumber, pageSize } = filter;
 
     if (searchString) {
         documentData = documentData.where('name', '==', searchString); // TODO: need to implement LIKE instead of equals
@@ -36,6 +36,10 @@ export const filterItems = async (filter: Filter): Promise<ShopItem[]> => {
 
     const queryDirection: string = sortOrder === SortOrder.PriceHighest ? 'desc' : 'asc';
     documentData = documentData.orderBy('price', queryDirection);
+
+    // TODO: check if this works - might need to use item cursors
+    documentData = documentData.startAfter(pageNumber * pageSize);
+    documentData = documentData.limit(pageSize);
 
     const documents = await documentData.get();
 
