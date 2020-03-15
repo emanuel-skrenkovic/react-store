@@ -39,7 +39,8 @@ export const ShopFilter: React.FC<ShopFilterProps> =
             <input
                 className="ui input"
                 placeholder="Search..."
-                value={searchString} onChange={e => setSearchString(e.target.value) } />
+                value={searchString}
+                onChange={e => setSearchString(e.target.value) } />
             <label className="ui label">Sort By:</label>
             <select
                 className="ui dropdown"
@@ -48,8 +49,8 @@ export const ShopFilter: React.FC<ShopFilterProps> =
                 <option value={SortOrder.PriceLowest}>Price: Lowest</option>
                 <option value={SortOrder.PriceHighest}>Price: Highest</option>
             </select>
-            <select className="ui dropdown" onChange={onCategoryChanged}>
-                <option value={undefined}>Select Category</option>
+            <select className="ui dropdown" value={category} onChange={onCategoryChanged}>
+                <option value={''}>Select Category</option>
                 {categories.map(c => <option key={c.id} value={c.name}>{c.name}</option>)}
             </select>
             <button className="ui primary button" type="submit" onClick={onClickSubmitButton}>Apply</button>
