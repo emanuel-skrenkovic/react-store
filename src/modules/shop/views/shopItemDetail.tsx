@@ -4,6 +4,6 @@ import { ShopItem } from 'models';
 
 export const ShopItemDetail: React.FC<ShopItem> = (props: ShopItem) => {
     return (
-        <div>{props.name}</div>
+        <div className="two wide column">{props.name}</div>
     );
 };

@@ -1,5 +1,4 @@
-import { ShopItem, ShopItems, Category, Categories } from 'models';
-import { Filter } from 'modules/shop';
+import { ShopItem, ShopItems, Category, Categories, Filter } from 'models';
 
 export const GET_CATEGORY = 'GET_CATEGORY';
 export const GET_CATEGORIES = 'GET_CATEGORIES';

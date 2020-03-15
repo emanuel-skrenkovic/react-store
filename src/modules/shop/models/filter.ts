@@ -1,18 +1,7 @@
-import { Category } from 'models';
-
-export enum SortOrder {
-    PriceLowest = 'PriceLowest',
-    PriceHighest = 'PriceHighest'
-}
-
-export interface Filter {
-    sortOrder: SortOrder;
-    category: string;
-    searchString: string;
-}
+import { Category, Filter } from 'models';
 
 export interface ShopFilterProps {
-    categories: Category[];
     onSubmit: (filter: Filter) => void;
+    categories: Category[];
     initialFilter?: Filter;
 }

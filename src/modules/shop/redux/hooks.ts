@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { ApplicationState, Dictionary, ShopItems, Categories } from "models";
-import { Filter, attemptGetCategories, attemptGetItems } from 'modules/shop';
+import { ApplicationState, Dictionary, ShopItems, Categories, Filter } from "models";
+import { attemptGetCategories, attemptGetItems } from 'modules/shop';
 
-export const useShop = (): Dictionary<string, any>[] => {
+export const useShop = (filter: Filter | undefined): Dictionary<string, any>[] => {
     const { categories, items }: { categories: Categories, items: ShopItems } = useSelector(
         (state: ApplicationState) => {
             if (state.shop) {
@@ -17,9 +17,9 @@ export const useShop = (): Dictionary<string, any>[] => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(attemptGetItems());
+        dispatch(attemptGetItems(filter));
         dispatch(attemptGetCategories());
-    }, []);
+    }, [dispatch, filter]);
 
     return [categories, items];
 };

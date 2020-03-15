@@ -1,5 +1,5 @@
-import { Shop } from 'models';
-import { ShopAction, SortOrder, GET_ITEMS, GET_CATEGORIES, UPDATE_SHOP_FILTER } from 'modules/shop';
+import { Shop, SortOrder } from 'models';
+import { ShopAction, GET_ITEMS, GET_CATEGORIES, UPDATE_SHOP_FILTER } from 'modules/shop';
 
 const INITIAL_STATE: Shop = {
     items: {},
@@ -7,7 +7,9 @@ const INITIAL_STATE: Shop = {
     filter: {
         sortOrder: SortOrder.PriceLowest,
         category: '',
-        searchString: ''
+        searchString: '',
+        pageNumber: 1,
+        pageSize: 10
     }
 };
 

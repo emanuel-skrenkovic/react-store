@@ -1,5 +1,3 @@
-import { Filter } from 'modules/shop';
-
 export interface IndexedEntity {
     id: string;
 }
@@ -42,6 +40,19 @@ export interface Shop {
     categories: Categories
     items: ShopItems;
     filter: Filter;
+}
+
+export enum SortOrder {
+    PriceLowest = 'PriceLowest',
+    PriceHighest = 'PriceHighest'
+}
+
+export interface Filter {
+    sortOrder: SortOrder;
+    category: string;
+    searchString: string;
+    pageNumber: number;
+    pageSize: number;
 }
 
 export interface FirebaseConfiguration {

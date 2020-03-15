@@ -1,5 +1,4 @@
-import { ShopItem, ShopItems, Category, Categories } from 'models';
-import { Filter } from 'modules/shop';
+import { ShopItem, ShopItems, Category, Categories, Filter } from 'models';
 import {
     GetCategoryAction,
     GetCategoriesAction,
@@ -29,6 +28,6 @@ export const getItems = (items: ShopItems): GetItemsAction => {
     return { type: GET_ITEMS, payload: items };
 };
 
-export const updateShopFilter = (filter: Filter) => {
+export const updateShopFilter = (filter: Filter): UpdateShopFilterAction => {
     return { type: UPDATE_SHOP_FILTER, payload: filter };
 };

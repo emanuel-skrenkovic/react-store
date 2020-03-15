@@ -1,19 +1,18 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 
-import { ShopItem, Category } from 'models';
+import { ShopItem, Category, Filter } from 'models';
 import {
     ShopFilter,
     ShopItemList,
     useShop,
     useShopFilter,
-    updateShopFilter,
-    Filter
+    updateShopFilter
 } from 'modules/shop';
 
 export const ShopView: React.FC = () => {
-    const [categories, items] = useShop();
     const [filter] = useShopFilter();
+    const [categories, items] = useShop(filter);
 
     const categoriesArr: Category[] = Object.values(categories);
     const itemsArr: ShopItem[] = Object.values(items);
