@@ -1,8 +1,7 @@
 import * as firebase from "firebase";
 
 import { ApplicationUser, UserRole } from "models";
-import { auth, store, googleAuth, getDocument } from 'modules/common/providers';
-
+import { auth, store, googleAuth } from 'modules/common/providers';
 
 export const signInWithGoogle = async (): Promise<ApplicationUser> => {
     const userCredential: firebase.auth.UserCredential = await auth.signInWithPopup(googleAuth);
@@ -20,6 +19,17 @@ export const signOut = async (): Promise<void> => {
     return auth.signOut();
 };
 
+export const registerUser = async (email: string, password: string, role: UserRole): Promise<void> => {
+    const userCredential: firebase.auth.UserCredential = await auth.createUserWithEmailAndPassword(email, password);
+
+    if (userCredential.user) {
+        const userId: string = userCredential.user.uid;
+        await store.collection('profiles')
+            .doc(userId)
+            .set({ role: role });
+    }
+};
+
 const signIn = async (userCredential: firebase.auth.UserCredential): Promise<ApplicationUser> => {
     // TODO: refactor
     let userId: string  = '';
@@ -30,18 +40,12 @@ const signIn = async (userCredential: firebase.auth.UserCredential): Promise<App
         username = userCredential.user.displayName || '';
     }
 
-    const { role } = await getDocument<ApplicationUser>('profiles', userId);
+    const documentData: firebase.firestore.DocumentData = await store.collection('profiles')
+        .doc(userId)
+        .get();
+
+    const user: ApplicationUser = documentData.data() as ApplicationUser;
+    const { role } = user;
 
     return { userId, username, role };
-};
-
-export const registerUser = async (email: string, password: string, role: UserRole): Promise<void> => {
-    const userCredential: firebase.auth.UserCredential = await auth.createUserWithEmailAndPassword(email, password);
-
-    if (userCredential.user) {
-        const userId: string = userCredential.user.uid;
-        await store.collection('profiles')
-            .doc(userId)
-            .set({ role: role });
-    }
 };
