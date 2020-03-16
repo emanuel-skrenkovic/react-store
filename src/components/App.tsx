@@ -6,6 +6,7 @@ import { history } from 'models/history';
 import { Header, ProtectedRoute } from 'modules/navigation';
 import { SignInView, RegisterView, selectAuthInfo } from 'modules/authentication';
 import { ShopView } from 'modules/shop';
+import { CartView } from 'modules/cart';
 
 const App: React.FC = () => {
     const { isSignedIn } = useSelector(selectAuthInfo);
@@ -19,7 +20,7 @@ const App: React.FC = () => {
                     <Route path="/login" exact component={SignInView} />
                     <Route path="/register" exact component={RegisterView} />
                     <Route path="/listing" exact component={ShopView} />
-                    <Route path="/cart" exact />
+                    <Route path="/cart" exact component={CartView} />
                     <Route path="/faq" exact />
                     <ProtectedRoute isAuthenticated={isSignedIn} isAllowed={true} path="/admin" exact />
                 </Switch>

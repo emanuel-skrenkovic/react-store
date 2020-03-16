@@ -1,28 +1,21 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 
-import { ShopItemListProps } from 'modules/shop';
+import { ShopItem } from 'models';
+import { ShopItemListProps, ShopItemDetail } from 'modules/shop';
+import { addItem } from 'modules/cart';
 
 export const ShopItemList: React.FC<ShopItemListProps> = (props: ShopItemListProps) => {
     const { items } = props;
+    const dispatch = useDispatch();
 
-    const renderItems = () => {
-        return items.map(i => (
-            <div className="item ui grid" key={i.id}>
-                {i.name}
-                <div className="item right floated">
-                    {i.price}
-                </div>
-                <div className="item right floated">
-                    <button className="ui button">Add to cart</button>
-                </div>
-            </div>)
-        );
+    const onClickAddToCart = (item: ShopItem) => {
+        dispatch(addItem(item));
     };
 
     return items
-        ? (
-            <div className="ui celled list">
-                  {renderItems()}
-            </div>
-         ) : null;
+        ? (<div className="ui celled list">
+                  {items.map(i => <ShopItemDetail item={i} onButtonClick={onClickAddToCart} buttonText='Add to Cart' />)}
+            </div>)
+        : null;
 };

@@ -42,6 +42,11 @@ export interface Shop {
     filter: Filter;
 }
 
+export interface Cart {
+    items: ShopItems;
+    totalCost: number;
+}
+
 export enum SortOrder {
     PriceLowest = 'PriceLowest',
     PriceHighest = 'PriceHighest'
@@ -68,4 +73,5 @@ export interface ApplicationState {
     appSettings: ApplicationSettings;
     auth: AuthenticationState;
     shop: Shop;
+    cart: Cart;
 }
