@@ -13,9 +13,23 @@ export const ShopItemList: React.FC<ShopItemListProps> = (props: ShopItemListPro
         dispatch(addItem(item));
     };
 
-    return items
-        ? (<div className="ui celled list">
-                  {items.map(i => <ShopItemDetail item={i} onButtonClick={onClickAddToCart} buttonText='Add to Cart' />)}
-            </div>)
-        : null;
+    const renderItems = () => {
+        if (!items) {
+            return null;
+        }
+
+        return (
+            <div className="ui celled list">
+                {items.map(i => {
+                    return (
+                        <ShopItemDetail item={i}>
+                            <button className="ui button" onClick={() => onClickAddToCart(i)}>Add to Cart</button>
+                        </ShopItemDetail>
+                    );
+                })}
+            </div>
+        );
+    };
+
+    return <div>{renderItems()}</div>;
 };
