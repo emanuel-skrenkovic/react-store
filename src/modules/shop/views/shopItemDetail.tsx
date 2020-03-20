@@ -8,10 +8,10 @@ export const ShopItemDetail: React.FC<ShopItemDetailProps> = (props: React.Props
     return (
         <div className="item ui grid" key={item.id}>
             {item.name}
+            {children}
             <div className="item right floated">
                 {item.price}
             </div>
-            {children}
         </div>
     );
 };
