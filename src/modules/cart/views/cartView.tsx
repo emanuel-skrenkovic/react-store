@@ -15,6 +15,10 @@ export const CartView: React.FC = () => {
         dispatch(removeItem(id));
     };
 
+    const onClickCheckOut = () => {
+        console.log('checkout');
+    };
+
     const renderItems = () => {
         if (!itemsArr) {
             return null;
@@ -24,8 +28,10 @@ export const CartView: React.FC = () => {
             <div className="ui celled list">
                 {itemsArr.map(i => {
                     return (
-                        <ShopItemDetail item={i}>
-                            <button className="ui button" onClick={() => onClickRemoveFromCart(i.id)}>Remove from cart</button>
+                        <ShopItemDetail key={i.id} item={i}>
+                            <div className="item right floated">
+                                <button className="ui button" onClick={() => onClickRemoveFromCart(i.id)}>Remove from cart</button>
+                            </div>
                         </ShopItemDetail>
                     );
                 })}
@@ -34,9 +40,15 @@ export const CartView: React.FC = () => {
     };
 
     return (
-        <div>
+        <div className="ui container">
             {renderItems()}
-            Total Price: {totalCost}
+            <div className="ui left action input">
+                <button className="ui teal labeled icon button" onClick={() => onClickCheckOut()}>
+                    <i className="cart icon"/>
+                    Checkout
+                </button>
+                <input type="text" readOnly value={totalCost} />
+            </div>
         </div>
     );
 };
