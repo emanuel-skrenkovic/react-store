@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 
 import { ShopItem } from 'models';
 import { ShopItemListProps, ShopItemDetail } from 'modules/shop';
-import { addItem } from 'modules/cart';
+import { attemptAddItem } from 'modules/cart';
 
 interface Status {
     id: number;
@@ -17,13 +17,11 @@ export const ShopItemList: React.FC<ShopItemListProps> = (props: ShopItemListPro
     const [statuses, setStatuses] = useState([] as Status[]);
 
     const onClickAddToCart = (item: ShopItem) => {
-        dispatch(addItem(item));
-
-        const id: number = statuses.length + 1;
+        const id: number = statuses.length + 1; // TODO: check if safe
 
         const status = {
             id: id,
-            message: `Added ${item.name} to cart.`,
+            message: `Added ${item.name} to cart.`
         } as Status;
 
         const newStatuses = [
@@ -34,6 +32,8 @@ export const ShopItemList: React.FC<ShopItemListProps> = (props: ShopItemListPro
         setStatuses(newStatuses);
 
         setTimeout(() => setStatuses(statuses.filter(s => s.id === id)), 3000);
+
+        dispatch(attemptAddItem(item));
     };
 
     const renderItems = () => {

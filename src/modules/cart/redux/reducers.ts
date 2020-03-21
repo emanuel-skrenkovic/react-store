@@ -1,6 +1,6 @@
-import { omit } from 'lodash';
+import { omit, has } from 'lodash';
 
-import { Cart } from 'models';
+import { Cart, CartItem, CartItems, ShopItem } from 'models';
 import { CartAction, ADD_ITEM, REMOVE_ITEM } from 'modules/cart';
 
 const INITIAL_STATE: Cart = {
@@ -12,27 +12,45 @@ export const cartReducer = (state: Cart = INITIAL_STATE,  action: CartAction): C
     switch (action.type) {
         case ADD_ITEM:
         {
-            const item = action.payload;
-            const newItems = { ...state.items, [item.id]: item };
+            const newItem: ShopItem = action.payload;
+            const oldItems: CartItems = state.items;
 
-            // TODO: should this be moved out of state and calculated on
-            // demand in a selector?
-            const newCost: number = Object.values(newItems)
-                .map(i => i.price)
-                .reduce((acc, x) => acc + x, 0);
+            let newCartItem: CartItem;
+
+            if (has(state.items, newItem.id)) {
+                const oldItem = oldItems[newItem.id];
+                newCartItem = { ...oldItem, count: ++oldItem.count };
+            } else {
+                newCartItem = { item: newItem, count: 1 };
+            }
+
+            const newItems: CartItems = { ...oldItems, [newItem.id]: newCartItem };
+            const newCost: number = getTotalCost(newItems);
 
             return { ...state, totalCost: newCost, items: newItems };
         }
 
         case REMOVE_ITEM:
         {
-            const newItems = omit(state.items, action.payload);
+            const id = action.payload;
 
-            // TODO: should this be moved out of state and calculated on
-            // demand in a selector?
-            const newCost: number = Object.values(newItems)
-                .map(i => i.price)
-                .reduce((acc, x) => acc + x, 0);
+            const oldItems = state.items;
+            let newItems: CartItems;
+
+            if (has(state.items, id)) {
+                const oldItem = oldItems[id];
+
+                if (oldItem.count > 1) {
+                    const newItem: CartItem = { ...oldItem, count: --oldItem.count };
+                    newItems = { ...oldItems, [id]: newItem };
+                } else {
+                    newItems = omit(state.items, id);
+                }
+            } else {
+                newItems = omit(state.items, id);
+            }
+
+            const newCost: number = getTotalCost(newItems);
 
             return { ...state, totalCost: newCost, items: newItems };
         }
@@ -40,4 +58,12 @@ export const cartReducer = (state: Cart = INITIAL_STATE,  action: CartAction): C
         default:
             return state;
     }
+};
+
+const getTotalCost = (items: CartItems): number => {
+    // multiply the cost of the items with the count
+    // sum everything in the end
+    return Object.values(items)
+        .map(i => i.item.price * i.count)
+        .reduce((acc, x) => acc + x, 0);
 };
