@@ -25,9 +25,8 @@ export const cartReducer = (state: Cart = INITIAL_STATE,  action: CartAction): C
             }
 
             const newItems: CartItems = { ...oldItems, [newItem.id]: newCartItem };
-            const newCost: number = getTotalCost(newItems);
 
-            return { ...state, totalCost: newCost, items: newItems };
+            return { ...state, totalCost: getTotalCost(newItems), items: newItems };
         }
 
         case REMOVE_ITEM:
@@ -37,6 +36,8 @@ export const cartReducer = (state: Cart = INITIAL_STATE,  action: CartAction): C
             const oldItems = state.items;
             let newItems: CartItems;
 
+            // if the item is already there, subtract '1' from the count
+            // if the count is 1, remove the item
             if (has(state.items, id)) {
                 const oldItem = oldItems[id];
 
@@ -50,9 +51,7 @@ export const cartReducer = (state: Cart = INITIAL_STATE,  action: CartAction): C
                 newItems = omit(state.items, id);
             }
 
-            const newCost: number = getTotalCost(newItems);
-
-            return { ...state, totalCost: newCost, items: newItems };
+            return { ...state, totalCost: getTotalCost(newItems), items: newItems };
         }
 
         default:
