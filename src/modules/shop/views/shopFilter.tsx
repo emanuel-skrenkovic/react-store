@@ -44,13 +44,16 @@ export const ShopFilter: React.FC<ShopFilterProps> =
     };
 
     return (
-        <div className="ui bottom visible sidebar vertical menu"> {/* TODO: fix css */}
-            <input
-                className="ui input"
-                placeholder="Search..."
-                value={searchString}
-                onChange={e => setSearchString(e.target.value) } />
-            <label className="ui label">Sort By:</label>
+        // <div className="ui right visible sidebar vertical menu"> {/* TODO: fix css */}
+        <div >
+            <div className="ui icon input"> {/* TODO: move to navigation bar */}
+                <input
+                    placeholder="Search..."
+                    value={searchString}
+                    onChange={e => setSearchString(e.target.value) } />
+                <i className="circular search link icon" />
+            </div>
+            <label className="ui label">Sort By Price:</label>
             <select
                 className="ui dropdown"
                 value={sortOrder}
@@ -58,6 +61,7 @@ export const ShopFilter: React.FC<ShopFilterProps> =
                 <option value={SortOrder.PriceLowest}>Price: Lowest</option>
                 <option value={SortOrder.PriceHighest}>Price: Highest</option>
             </select>
+            <label className="ui label">Filter By Categories:</label>
             <select className="ui dropdown" value={category} onChange={onCategoryChanged}>
                 <option value={''}>Select Category</option>
                 {categories.map(c => <option key={c.id} value={c.name}>{c.name}</option>)}

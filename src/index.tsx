@@ -6,13 +6,15 @@ import { Provider } from 'react-redux';
 
 import { authReducer } from 'modules/authentication';
 import { shopReducer } from 'modules/shop';
+import { cartReducer } from 'modules/cart';
 
 import App from 'components/App';
 
 const composeEnhancers = (window as any)['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__'] as typeof compose || compose;
 const reducers = combineReducers({
     auth: authReducer,
-    shop: shopReducer
+    shop: shopReducer,
+    cart: cartReducer
 });
 const store = createStore(reducers, composeEnhancers(applyMiddleware(reduxThunk)));
 

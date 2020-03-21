@@ -42,6 +42,18 @@ export interface Shop {
     filter: Filter;
 }
 
+export interface CartItem {
+    item: ShopItem;
+    count: number;
+}
+
+export interface CartItems extends Dictionary<string, CartItem> { }
+
+export interface Cart {
+    items: CartItems;
+    totalCost: number;
+}
+
 export enum SortOrder {
     PriceLowest = 'PriceLowest',
     PriceHighest = 'PriceHighest'
@@ -68,4 +80,5 @@ export interface ApplicationState {
     appSettings: ApplicationSettings;
     auth: AuthenticationState;
     shop: Shop;
+    cart: Cart;
 }
