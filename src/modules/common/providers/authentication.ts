@@ -1,4 +1,4 @@
-import * as firebase from "firebase";
+import * as firebase from "firebase/app";
 
 import { ApplicationUser, UserRole } from "models";
 import { auth, store, googleAuth } from 'modules/common/providers';
