@@ -48,7 +48,7 @@ export const ShopItemList: React.FC<ShopItemListProps> = (props: ShopItemListPro
                         <ShopItemDetail key={i.id} item={i}>
                             <div className="item right floated ">
                                 <button className="ui button" onClick={() => onClickAddToCart(i)}>Add to Cart</button>
-                                <input type="number" />
+                                <input className="ui small input" type="number" />
                             </div>
                         </ShopItemDetail>
                     );

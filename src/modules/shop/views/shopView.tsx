@@ -25,15 +25,15 @@ export const ShopView: React.FC = () => {
 
     return (
         <div className="ui container">
-            <div className="ui two column grid center aligned">
-                <div className="column">
-                    <ShopItemList items={itemsArr} />
-                </div>
-                <div className="column">
+            <div className="ui two row grid center aligned">
+                <div className="row">
                     <ShopFilter
                         categories={categoriesArr}
                         initialFilter={filter}
                         onSubmit={onFilterSubmit} />
+                </div>
+                <div className="row">
+                    <ShopItemList items={itemsArr} />
                 </div>
             </div>
         </div>

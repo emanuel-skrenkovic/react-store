@@ -4,6 +4,7 @@ import { Link, useLocation } from 'react-router-dom';
 
 import { selectAuthInfo, selectIsAdmin, attemptSignOut } from 'modules/authentication';
 import { selectCartItemCount } from 'modules/cart';
+import { useShopFilter, updateShopFilter } from 'modules/shop';
 
 export const Header: React.FC = () => {
     const { isSignedIn, user } = useSelector(selectAuthInfo);
@@ -11,6 +12,7 @@ export const Header: React.FC = () => {
     const isAdmin = useSelector(selectIsAdmin);
     const cartItemCount = useSelector(selectCartItemCount);
 
+    const [filter] = useShopFilter();
     const [searchTerm, setSearchTerm] = useState('');
 
     const dispatch = useDispatch();
@@ -37,6 +39,13 @@ export const Header: React.FC = () => {
             : 'item';
     };
 
+    const onSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const searchTerm = e.target.value;
+
+        setSearchTerm(searchTerm);
+        dispatch(updateShopFilter({ ...filter, searchString: searchTerm }));
+    };
+
     return (
         <div className="ui tabular menu">
             <span>Hi!{' '}{renderAuth()}</span>
@@ -49,7 +58,7 @@ export const Header: React.FC = () => {
                     <input
                         placeholder="Search..."
                         value={searchTerm}
-                        onChange={e => setSearchTerm(e.target.value)} />
+                        onChange={onSearchChange} />
                     <i className="circular search link icon" />
                 </div>
                 <div>

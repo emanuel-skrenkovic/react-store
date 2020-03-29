@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useState } from 'react';
 
-import { Filter, SortOrder } from 'models';
+import { SortOrder } from 'models';
 import { ShopFilterProps } from 'modules/shop';
 
 export const ShopFilter: React.FC<ShopFilterProps> =
@@ -12,61 +12,43 @@ export const ShopFilter: React.FC<ShopFilterProps> =
     const [pageNumber] = useState(initialFilter.pageNumber);
     const [pageSize] = useState(initialFilter.pageSize);
 
-    const onClickSubmitButton = (event: React.SyntheticEvent ) => {
-        event.preventDefault();
-
-        // TODO: change to update only the changed values instead of recreate
-        // the entire filter object.
-        // This will be more relevant when the search bar is moved to the
-        // application header and paging is moved to a separate component.
-        const filter = {
-            sortOrder: sortOrder,
-            searchString: searchString,
-            category: category,
-            pageNumber: pageNumber,
-            pageSize: pageSize
-        } as Filter;
-
-        onSubmit(filter);
-    };
-
     const onSortOrderChanged = (e: ChangeEvent<HTMLSelectElement>) => {
         e.preventDefault();
 
         const selectedSortOrder: SortOrder = SortOrder[e.currentTarget.value as keyof typeof SortOrder];
         setSortOrder(selectedSortOrder);
+
+        onSubmit({ ...initialFilter, sortOrder: selectedSortOrder });
     };
 
     const onCategoryChanged = (e: ChangeEvent<HTMLSelectElement>) => {
         e.preventDefault();
 
-        setCategory(e.currentTarget.value);
+        const category = e.currentTarget.value;
+        setCategory(category);
+
+        onSubmit({ ...initialFilter, category: category });
     };
 
     return (
-        // <div className="ui right visible sidebar vertical menu"> {/* TODO: fix css */}
-        <div >
-            <div className="ui icon input"> {/* TODO: move to navigation bar */}
-                <input
-                    placeholder="Search..."
-                    value={searchString}
-                    onChange={e => setSearchString(e.target.value) } />
-                <i className="circular search link icon" />
+        <div className="ui text menu">
+            <div className="item">
+                <label className="ui label">Sort By Price:</label>
+                <select
+                    className="ui dropdown"
+                    value={sortOrder}
+                    onChange={onSortOrderChanged}>
+                    <option value={SortOrder.PriceLowest}>Price: Lowest</option>
+                    <option value={SortOrder.PriceHighest}>Price: Highest</option>
+                </select>
             </div>
-            <label className="ui label">Sort By Price:</label>
-            <select
-                className="ui dropdown"
-                value={sortOrder}
-                onChange={onSortOrderChanged}>
-                <option value={SortOrder.PriceLowest}>Price: Lowest</option>
-                <option value={SortOrder.PriceHighest}>Price: Highest</option>
-            </select>
-            <label className="ui label">Filter By Categories:</label>
-            <select className="ui dropdown" value={category} onChange={onCategoryChanged}>
-                <option value={''}>Select Category</option>
-                {categories.map(c => <option key={c.id} value={c.name}>{c.name}</option>)}
-            </select>
-            <button className="ui primary button" type="submit" onClick={onClickSubmitButton}>Apply</button>
+            <div className="item">
+                <label className="ui label">Filter By Categories:</label>
+                <select className="ui dropdown" value={category} onChange={onCategoryChanged}>
+                    <option value={''}>Select Category</option>
+                    {categories.map(c => <option key={c.id} value={c.name}>{c.name}</option>)}
+                </select>
+            </div>
         </div>
     );
 };
