@@ -48,7 +48,7 @@ export const Header: React.FC = () => {
 
     return (
         <div className="ui tabular menu">
-            <span>Hi!{' '}{renderAuth()}</span>
+            <span className="item">Hi!&nbsp;{renderAuth()}</span>
             <Link className={getTabStyle('/home') || getTabStyle('/')} to="/home">Home</Link>
             <Link className={getTabStyle('/listing')} to="/listing">Listing</Link>
             <Link className={getTabStyle('/faq')} to="/faq">FAQ</Link>
