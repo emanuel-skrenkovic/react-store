@@ -6,11 +6,8 @@ import { ShopFilterProps } from 'modules/shop';
 export const ShopFilter: React.FC<ShopFilterProps> =
     ({ initialFilter, categories, onSubmit }: ShopFilterProps) => {
 
-    const [searchString, setSearchString] = useState(initialFilter.searchString);
     const [sortOrder, setSortOrder] = useState(initialFilter.sortOrder);
     const [category, setCategory] = useState(initialFilter.category);
-    const [pageNumber] = useState(initialFilter.pageNumber);
-    const [pageSize] = useState(initialFilter.pageSize);
 
     const onSortOrderChanged = (e: ChangeEvent<HTMLSelectElement>) => {
         e.preventDefault();
