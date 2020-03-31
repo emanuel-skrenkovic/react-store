@@ -39,6 +39,8 @@ export const Header: React.FC = () => {
             : 'item';
     };
 
+    const setActiveTab = (linkPath: string) => linkPath === pathname ? 'active' : '';
+
     const onSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const searchTerm = e.target.value;
 
@@ -49,11 +51,11 @@ export const Header: React.FC = () => {
     return (
         <div className="ui tabular menu">
             <span className="item">Hi!&nbsp;{renderAuth()}</span>
-            <Link className={getTabStyle('/home') || getTabStyle('/')} to="/home">Home</Link>
-            <Link className={getTabStyle('/listing')} to="/listing">Listing</Link>
-            <Link className={getTabStyle('/faq')} to="/faq">FAQ</Link>
+            <Link className={`${setActiveTab('/home') || setActiveTab('/')} item`} to="/home">Home</Link>
+            <Link className={`${setActiveTab('/listing')} item`} to="/listing">Listing</Link>
+            <Link className={`${setActiveTab('/faq')} item`} to="/faq">FAQ</Link>
             {isAdmin && <Link to="/admin" className={getTabStyle('/admin')}>Administration</Link>}
-            <div className="ui tabular right menu">
+            <div className="item">
                 <div className="ui icon input">
                     <input
                         placeholder="Search..."
@@ -61,17 +63,15 @@ export const Header: React.FC = () => {
                         onChange={onSearchChange} />
                     <i className="circular search link icon" />
                 </div>
-                <div>
-                    <Link to="/cart" className={getTabStyle('/cart')}>
-                        {cartItemCount > 0 &&
-                        <div className="ui teal right pointing label">{cartItemCount}</div>}
-                        Cart
-                    </Link>
-                </div>
-                {isSignedIn
-                    ? <button className="item" onClick={() => dispatch(attemptSignOut())}>Sign Out</button>
-                    : null}
             </div>
+            <Link to="/cart" className={`${setActiveTab('/cart')} right item`}>
+                {cartItemCount > 0 &&
+                <div className="ui teal right pointing label">{cartItemCount}</div>}
+                Cart
+            </Link>
+            {isSignedIn
+                ? <button className="item" onClick={() => dispatch(attemptSignOut())}>Sign Out</button>
+                : null}
         </div>
     );
 };
