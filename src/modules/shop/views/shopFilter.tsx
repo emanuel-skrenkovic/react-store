@@ -30,9 +30,9 @@ export const ShopFilter: React.FC<ShopFilterProps> =
     return (
         <div className="ui text menu">
             <div className="item">
-                <label className="ui label">Sort By Price:</label>
+                <label className="ui large label">Sort By Price:</label>
                 <select
-                    className="ui dropdown"
+                    className="ui selection dropdown"
                     value={sortOrder}
                     onChange={onSortOrderChanged}>
                     <option value={SortOrder.PriceLowest}>Price: Lowest</option>
@@ -40,8 +40,8 @@ export const ShopFilter: React.FC<ShopFilterProps> =
                 </select>
             </div>
             <div className="item">
-                <label className="ui label">Filter By Categories:</label>
-                <select className="ui dropdown" value={category} onChange={onCategoryChanged}>
+                <label className="ui large label">Filter By Categories:</label>
+                <select className="ui selection dropdown" value={category} onChange={onCategoryChanged}>
                     <option value={''}>Select Category</option>
                     {categories.map(c => <option key={c.id} value={c.name}>{c.name}</option>)}
                 </select>
