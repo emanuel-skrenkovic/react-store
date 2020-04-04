@@ -1,4 +1,4 @@
-import { ShopItem, ShopItems, Category, Categories, Filter } from 'models';
+import { ShopItem, Category, Categories, Filter } from 'models';
 
 export const GET_CATEGORY = 'GET_CATEGORY';
 export const GET_CATEGORIES = 'GET_CATEGORIES';
@@ -23,7 +23,7 @@ export interface GetItemAction {
 
 export interface GetItemsAction {
     type: typeof GET_ITEMS;
-    payload: ShopItems;
+    payload: ShopItem[];
 }
 
 export interface UpdateShopFilterAction {

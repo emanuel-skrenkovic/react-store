@@ -1,4 +1,4 @@
-import { ShopItem, ShopItems, Category, Categories, Filter } from 'models';
+import { ShopItem, Category, Categories, Filter } from 'models';
 import {
     GetCategoryAction,
     GetCategoriesAction,
@@ -24,7 +24,7 @@ export const getItem = (item: ShopItem): GetItemAction => {
     return { type: GET_ITEM, payload: item };
 };
 
-export const getItems = (items: ShopItems): GetItemsAction => {
+export const getItems = (items: ShopItem[]): GetItemsAction => {
     return { type: GET_ITEMS, payload: items };
 };
 

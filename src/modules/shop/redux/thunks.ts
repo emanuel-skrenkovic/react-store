@@ -1,6 +1,6 @@
 import { ThunkDispatch } from "redux-thunk";
 
-import { Filter, ApplicationState, ShopItem, ShopItems, Category, Categories, } from 'models';
+import { Filter, ApplicationState, ShopItem, Category, Categories, } from 'models';
 import { fetchItemById, filterItems, fetchItems } from 'modules/common/providers/items';
 import { fetchCategoryById, fetchCategories } from 'modules/common/providers/categories';
 import {
@@ -28,11 +28,7 @@ export const attemptGetItems = (filter: Filter | undefined) =>
             items = await fetchItems();
         }
 
-        const itemsDict: ShopItems = items.reduce<ShopItems>((acc, x) => {
-            return { ...acc, [x.id]: x };
-        }, {});
-
-        dispatch(getItems(itemsDict));
+        dispatch(getItems(items));
     };
 
 export const attemptGetCategory = (categoryId: string) =>

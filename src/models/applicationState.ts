@@ -23,6 +23,7 @@ export interface Category extends IndexedEntity {
 }
 
 export interface ShopItem extends IndexedEntity {
+    id: string;
     name: string;
     category: string;
     price: number;
@@ -34,11 +35,9 @@ export type Dictionary<TKey extends string | number, TItem> = {
 
 export interface Categories extends Dictionary<string, Category> { }
 
-export interface ShopItems extends Dictionary<string, ShopItem> { }
-
 export interface Shop {
     categories: Categories
-    items: ShopItems;
+    items: ShopItem[];
     filter: Filter;
 }
 

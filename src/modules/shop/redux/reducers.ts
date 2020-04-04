@@ -2,7 +2,7 @@ import { Shop, SortOrder } from 'models';
 import { ShopAction, GET_ITEMS, GET_CATEGORIES, UPDATE_SHOP_FILTER } from 'modules/shop';
 
 const INITIAL_STATE: Shop = {
-    items: {},
+    items: [],
     categories: {},
     filter: {
         sortOrder: SortOrder.PriceLowest,
