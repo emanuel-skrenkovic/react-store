@@ -45,6 +45,11 @@ export const Header: React.FC = () => {
         const searchTerm = e.target.value;
 
         setSearchTerm(searchTerm);
+    };
+
+    const onSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
         dispatch(updateShopFilter({ ...filter, searchString: searchTerm }));
     };
 
@@ -57,10 +62,12 @@ export const Header: React.FC = () => {
             {isAdmin && <Link to="/admin" className={getTabStyle('/admin')}>Administration</Link>}
             <div className="item">
                 <div className="ui icon input">
-                    <input
-                        placeholder="Search..."
-                        value={searchTerm}
-                        onChange={onSearchChange} />
+                    <form className="ui form" onSubmit={onSearchSubmit}>
+                        <input
+                            placeholder="Search..."
+                            value={searchTerm}
+                            onChange={onSearchChange} />
+                    </form>
                     <i className="circular search link icon" />
                 </div>
             </div>
