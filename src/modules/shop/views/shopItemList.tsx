@@ -2,12 +2,16 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { ShopItem } from 'models';
-import { ShopItemListProps, ShopItemDetail } from 'modules/shop';
+import { ShopItemDetail } from 'modules/shop';
 import { attemptAddItem } from 'modules/cart';
 
 interface Status {
     id: number;
     message: string;
+}
+
+export interface ShopItemListProps {
+    items: ShopItem[];
 }
 
 export const ShopItemList: React.FC<ShopItemListProps> = (props: ShopItemListProps) => {

@@ -1,7 +1,12 @@
 import React, { ChangeEvent, useState } from 'react';
 
-import { SortOrder } from 'models';
-import { ShopFilterProps } from 'modules/shop';
+import {Category, Filter, SortOrder} from 'models';
+
+export interface ShopFilterProps {
+    onSubmit: (filter: Filter) => void;
+    categories: Category[];
+    initialFilter: Filter;
+}
 
 export const ShopFilter: React.FC<ShopFilterProps> =
     ({ initialFilter, categories, onSubmit }: ShopFilterProps) => {

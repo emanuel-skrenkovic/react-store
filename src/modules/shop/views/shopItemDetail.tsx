@@ -1,6 +1,10 @@
 import React from 'react';
 
-import { ShopItemDetailProps } from 'modules/shop';
+import { ShopItem } from 'models';
+
+export interface ShopItemDetailProps {
+    item: ShopItem
+}
 
 export const ShopItemDetail: React.FC<ShopItemDetailProps> = (props: React.PropsWithChildren<ShopItemDetailProps>) => {
     const { item, children } = props;
