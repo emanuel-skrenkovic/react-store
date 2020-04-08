@@ -1,6 +1,6 @@
 import { ThunkDispatch } from "redux-thunk";
 
-import { Filter, ApplicationState, ShopItem, Category, Categories, } from 'models';
+import { Filter, Pagination, ApplicationState, ShopItem, Category, Categories, } from 'models';
 import { fetchItemById, filterItems, fetchItems } from 'modules/common/providers/items';
 import { fetchCategoryById, fetchCategories } from 'modules/common/providers/categories';
 import {
@@ -18,12 +18,12 @@ export const attemptGetItem = (itemId: string) =>
         dispatch(getItem(item));
     };
 
-export const attemptGetItems = (filter: Filter | undefined) =>
+export const attemptGetItems = (filter: Filter | undefined, pagination: Pagination) =>
     async (dispatch: ThunkDispatch<ApplicationState, void, ShopAction>) => {
         let items: ShopItem[];
 
         if (filter) {
-            items = await filterItems(filter);
+            items = await filterItems(filter, pagination);
         } else {
             items = await fetchItems();
         }

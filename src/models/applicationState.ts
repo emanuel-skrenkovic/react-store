@@ -39,6 +39,7 @@ export interface Shop {
     categories: Categories
     items: ShopItem[];
     filter: Filter;
+    pagination: Pagination;
 }
 
 export interface CartItem {
@@ -58,12 +59,17 @@ export enum SortOrder {
     PriceHighest = 'PriceHighest'
 }
 
+export interface Pagination {
+    lastItemId: string;
+    currentPage: number;
+    pageNumber: number;
+    pageSize: number;
+}
+
 export interface Filter {
     sortOrder: SortOrder;
     category: string;
     searchString: string;
-    pageNumber: number;
-    pageSize: number;
 }
 
 export interface FirebaseConfiguration {

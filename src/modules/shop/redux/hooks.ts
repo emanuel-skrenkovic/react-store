@@ -1,31 +1,33 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { Dictionary, ShopItem, Categories, Filter } from "models";
+import { ShopItem, Categories, Filter, Pagination } from "models";
 import {
     attemptGetCategories,
     attemptGetItems,
     shopCategoriesSelector,
     shopFilterSelector,
+    shopPaginationSelector,
     shopItemsSelector
 } from 'modules/shop';
 
-export const useShop = (filter: Filter | undefined): Dictionary<string, any>[] => {
+export const useShop = (filter: Filter | undefined, pagination: Pagination): Array<any> => {
     const items: ShopItem[] = useSelector(shopItemsSelector);
     const categories: Categories = useSelector(shopCategoriesSelector);
 
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(attemptGetItems(filter));
+        dispatch(attemptGetItems(filter, pagination));
         dispatch(attemptGetCategories());
-    }, [dispatch, filter]);
+    }, [dispatch, filter, pagination]);
 
     return [categories, items];
 };
 
-export const useShopFilter = (): Array<Filter> => {
+export const useShopFilter = (): Array<any> => {
     const filter: Filter = useSelector(shopFilterSelector);
+    const pagination: Pagination = useSelector(shopPaginationSelector);
 
-    return [filter];
+    return [filter, pagination];
 };

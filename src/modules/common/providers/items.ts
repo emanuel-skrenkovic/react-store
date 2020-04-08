@@ -1,7 +1,7 @@
 import * as firebase from "firebase/app";
 import 'firebase/firestore';
 
-import { SortOrder, Filter, ShopItem } from 'models';
+import { Pagination, SortOrder, Filter, ShopItem } from 'models';
 import { store }  from "modules/common";
 
 const ITEMS_COLLECTION = 'items';
@@ -21,10 +21,11 @@ export const fetchItems = async (): Promise<ShopItem[]> => {
         (doc: firebase.firestore.QueryDocumentSnapshot) => { return { ...doc.data(), id: doc.id }}) as ShopItem[];
 };
 
-export const filterItems = async (filter: Filter): Promise<ShopItem[]> => {
+export const filterItems = async (filter: Filter, pagination: Pagination): Promise<ShopItem[]> => {
     let documentData: firebase.firestore.DocumentData = store.collection(ITEMS_COLLECTION);
 
-    const { searchString, category, sortOrder, pageNumber, pageSize } = filter;
+    const { searchString, category, sortOrder } = filter;
+    const { pageSize, lastItemId } = pagination;
 
     if (searchString) {
         documentData = documentData.where('name', '==', searchString); // TODO: need to implement LIKE instead of equals
@@ -37,9 +38,13 @@ export const filterItems = async (filter: Filter): Promise<ShopItem[]> => {
     const queryDirection: string = sortOrder === SortOrder.PriceHighest ? 'desc' : 'asc';
     documentData = documentData.orderBy('price', queryDirection);
 
-    // TODO: check if this works - might need to use item cursors
-    documentData = documentData.startAfter(pageNumber * pageSize);
+    if (lastItemId) {
+        documentData = documentData.startAfter(lastItemId);
+    }
+
     documentData = documentData.limit(pageSize);
+
+    console.log(documentData);
 
     const documents = await documentData.get();
 
