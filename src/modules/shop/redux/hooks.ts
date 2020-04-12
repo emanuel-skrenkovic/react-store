@@ -11,16 +11,20 @@ import {
     shopItemsSelector
 } from 'modules/shop';
 
-export const useShop = (filter: Filter | undefined, pagination: Pagination): Array<any> => {
+export const useShop = (filter: Filter, pagination: Pagination): Array<any> => {
     const items: ShopItem[] = useSelector(shopItemsSelector);
     const categories: Categories = useSelector(shopCategoriesSelector);
 
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(attemptGetItems(filter, pagination));
+        // Remove cursor from pagination on changing filter as changing filter
+        // resets the page to the first one.
+        const newPagination = { ...pagination, currentPage: 1, lastItemPrice: undefined }
+
+        dispatch(attemptGetItems(filter, newPagination));
         dispatch(attemptGetCategories());
-    }, [dispatch, filter, pagination]);
+    }, [dispatch, filter]);
 
     return [categories, items];
 };

@@ -1,4 +1,4 @@
-import { ShopItem, Category, Categories, Filter, Pagination } from 'models';
+import { ShopItem, ShopItems, Category, Categories, Filter } from 'models';
 
 export const GET_CATEGORY = 'GET_CATEGORY';
 export const GET_CATEGORIES = 'GET_CATEGORIES';
@@ -24,7 +24,7 @@ export interface GetItemAction {
 
 export interface GetItemsAction {
     type: typeof GET_ITEMS;
-    payload: ShopItem[];
+    payload: ShopItems;
 }
 
 export interface UpdateShopFilterAction {
@@ -32,18 +32,12 @@ export interface UpdateShopFilterAction {
     payload: Filter;
 }
 
-export interface UpdateShopPaginationAction {
-    type: typeof UPDATE_SHOP_PAGINATION;
-    payload: Pagination;
-}
-
 export type ShopAction =
     GetCategoryAction
     | GetCategoriesAction
     | GetItemAction
     | GetItemsAction
-    | UpdateShopFilterAction
-    | UpdateShopPaginationAction;
+    | UpdateShopFilterAction;
 
 export const getCategory = (category: Category): GetCategoryAction => {
     return { type: GET_CATEGORY, payload: category };
@@ -57,14 +51,10 @@ export const getItem = (item: ShopItem): GetItemAction => {
     return { type: GET_ITEM, payload: item };
 };
 
-export const getItems = (items: ShopItem[]): GetItemsAction => {
+export const getItems = (items: ShopItems): GetItemsAction => {
     return { type: GET_ITEMS, payload: items };
 };
 
 export const updateShopFilter = (filter: Filter): UpdateShopFilterAction => {
     return { type: UPDATE_SHOP_FILTER, payload: filter };
-};
-
-export const updateShopPagination = (pagination: Pagination): UpdateShopPaginationAction => {
-    return { type: UPDATE_SHOP_PAGINATION, payload: pagination };
 };

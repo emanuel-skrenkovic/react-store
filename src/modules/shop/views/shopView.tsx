@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 
-import { Category, Filter, Pagination } from 'models';
+import { Category, Filter } from 'models';
 import { Pager } from 'modules/common';
 import {
     ShopFilter,
@@ -9,7 +9,8 @@ import {
     useShop,
     useShopFilter,
     updateShopFilter,
-    updateShopPagination
+    attemptGetNextItemPage,
+    attemptGetPreviousItemPage
 } from 'modules/shop';
 
 export const ShopView: React.FC = () => {
@@ -17,7 +18,7 @@ export const ShopView: React.FC = () => {
     const [categories, items] = useShop(filter, pagination);
 
     const categoriesArr: Category[] = Object.values(categories);
-    const { currentPage, pageSize } = pagination;
+    const { currentPage, pageSize, totalItemCount } = pagination;
 
     const dispatch = useDispatch();
 
@@ -26,15 +27,11 @@ export const ShopView: React.FC = () => {
     };
 
     const onClickNextPage = () => {
-        const newPagination: Pagination = { ...pagination, currentPage: currentPage + 1 };
-
-        dispatch(updateShopPagination(newPagination));
+        dispatch(attemptGetNextItemPage());
     };
 
     const onClickPreviousPage = () => {
-        const newPagination = { ...pagination, currentPage: currentPage - 1 };
-
-        dispatch(updateShopPagination(newPagination));
+        dispatch(attemptGetPreviousItemPage());
     };
 
     return (
@@ -52,6 +49,7 @@ export const ShopView: React.FC = () => {
                 <Pager
                     currentPage={currentPage}
                     pageSize={pageSize}
+                    totalItemCount={totalItemCount}
                     onClickNext={onClickNextPage}
                     onClickPrevious={onClickPreviousPage}
                 />
