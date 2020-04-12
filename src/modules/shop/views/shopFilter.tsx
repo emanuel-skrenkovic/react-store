@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useState } from 'react';
 
-import {Category, Filter, SortOrder} from 'models';
+import { Category, Filter, SortOrder } from 'models';
 
 export interface ShopFilterProps {
     onSubmit: (filter: Filter) => void;

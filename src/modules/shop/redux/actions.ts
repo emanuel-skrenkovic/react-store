@@ -1,10 +1,11 @@
-import { ShopItem, Category, Categories, Filter } from 'models';
+import { ShopItem, ShopItems, Category, Categories, Filter } from 'models';
 
 export const GET_CATEGORY = 'GET_CATEGORY';
 export const GET_CATEGORIES = 'GET_CATEGORIES';
 export const GET_ITEM = 'GET_ITEM';
 export const GET_ITEMS = 'GET_ITEMS';
 export const UPDATE_SHOP_FILTER = 'UPDATE_SHOP_FILTER';
+export const UPDATE_SHOP_PAGINATION = 'UPDATE_SHOP_PAGINATION';
 
 export interface GetCategoryAction {
     type: typeof GET_CATEGORY;
@@ -23,7 +24,7 @@ export interface GetItemAction {
 
 export interface GetItemsAction {
     type: typeof GET_ITEMS;
-    payload: ShopItem[];
+    payload: ShopItems;
 }
 
 export interface UpdateShopFilterAction {
@@ -50,7 +51,7 @@ export const getItem = (item: ShopItem): GetItemAction => {
     return { type: GET_ITEM, payload: item };
 };
 
-export const getItems = (items: ShopItem[]): GetItemsAction => {
+export const getItems = (items: ShopItems): GetItemsAction => {
     return { type: GET_ITEMS, payload: items };
 };
 

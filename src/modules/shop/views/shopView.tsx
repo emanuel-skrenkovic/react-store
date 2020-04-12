@@ -1,26 +1,37 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 
-import { ShopItem, Category, Filter } from 'models';
+import { Category, Filter } from 'models';
+import { Pager } from 'modules/common';
 import {
     ShopFilter,
     ShopItemList,
     useShop,
     useShopFilter,
-    updateShopFilter
+    updateShopFilter,
+    attemptGetNextItemPage,
+    attemptGetPreviousItemPage
 } from 'modules/shop';
 
 export const ShopView: React.FC = () => {
-    const [filter] = useShopFilter();
-    const [categories, items] = useShop(filter);
+    const [filter, pagination] = useShopFilter();
+    const [categories, items] = useShop(filter, pagination);
 
     const categoriesArr: Category[] = Object.values(categories);
-    const itemsArr: ShopItem[] = Object.values(items);
+    const { currentPage, pageSize, totalItemCount } = pagination;
 
     const dispatch = useDispatch();
 
     const onFilterSubmit = (filter: Filter) => {
         dispatch(updateShopFilter(filter));
+    };
+
+    const onClickNextPage = () => {
+        dispatch(attemptGetNextItemPage());
+    };
+
+    const onClickPreviousPage = () => {
+        dispatch(attemptGetPreviousItemPage());
     };
 
     return (
@@ -33,8 +44,15 @@ export const ShopView: React.FC = () => {
                         onSubmit={onFilterSubmit} />
                 </div>
                 <div className="row">
-                    <ShopItemList items={itemsArr} />
+                    <ShopItemList items={items} />
                 </div>
+                <Pager
+                    currentPage={currentPage}
+                    pageSize={pageSize}
+                    totalItemCount={totalItemCount}
+                    onClickNext={onClickNextPage}
+                    onClickPrevious={onClickPreviousPage}
+                />
             </div>
         </div>
     );

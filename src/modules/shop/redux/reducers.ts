@@ -1,16 +1,28 @@
-import { Shop, SortOrder } from 'models';
-import { ShopAction, GET_ITEMS, GET_CATEGORIES, UPDATE_SHOP_FILTER } from 'modules/shop';
+import { Shop, ShopItems, Filter, Pagination, SortOrder } from 'models';
+import { GET_CATEGORIES, GET_ITEMS, ShopAction, UPDATE_SHOP_FILTER } from 'modules/shop';
+
+const DEFAULT_FILTER: Filter = {
+    sortOrder: SortOrder.PriceLowest,
+    category: '',
+    searchString: '',
+};
+
+const DEFAULT_PAGINATION: Pagination = {
+    lastItemPrice: undefined,
+    currentPage: 1,
+    totalItemCount: 0,
+    pageSize: 1
+};
+
+const DEFAULT_ITEMS: ShopItems = {
+    items: [],
+    pagination: DEFAULT_PAGINATION
+};
 
 const INITIAL_STATE: Shop = {
-    items: [],
+    items: DEFAULT_ITEMS,
     categories: {},
-    filter: {
-        sortOrder: SortOrder.PriceLowest,
-        category: '',
-        searchString: '',
-        pageNumber: 1,
-        pageSize: 10
-    }
+    filter: DEFAULT_FILTER,
 };
 
 export const shopReducer = (state: Shop = INITIAL_STATE, action: ShopAction): Shop => {
