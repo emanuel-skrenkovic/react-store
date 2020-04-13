@@ -1,4 +1,4 @@
-import { ShopItem, ShopItems, Category, Categories, Filter } from 'models';
+import { ShopItem, ShopItems, Category, Categories, Filter, history } from 'models';
 
 export const GET_CATEGORY = 'GET_CATEGORY';
 export const GET_CATEGORIES = 'GET_CATEGORIES';
@@ -56,5 +56,7 @@ export const getItems = (items: ShopItems): GetItemsAction => {
 };
 
 export const updateShopFilter = (filter: Filter): UpdateShopFilterAction => {
+    history.push('/listing');
+
     return { type: UPDATE_SHOP_FILTER, payload: filter };
 };
