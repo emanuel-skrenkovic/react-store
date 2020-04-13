@@ -7,6 +7,7 @@ import { Provider } from 'react-redux';
 import { authReducer } from 'modules/authentication';
 import { shopReducer } from 'modules/shop';
 import { cartReducer } from 'modules/cart';
+import { administrationReducer } from 'modules/administration';
 import { handleError, saveStateToCookie, readStateFromCookie, isPromise } from "modules/common";
 
 import App from 'components/App';
@@ -39,7 +40,8 @@ const composeEnhancers = (window as any)['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__']
 const reducers = combineReducers({
     auth: authReducer,
     shop: shopReducer,
-    cart: cartReducer
+    cart: cartReducer,
+    administration: administrationReducer
 });
 
 const initialState = readStateFromCookie();

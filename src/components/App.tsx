@@ -7,6 +7,7 @@ import { Header, ProtectedRoute } from 'modules/navigation';
 import { SignInView, RegisterView, selectAuthInfo } from 'modules/authentication';
 import { ShopView } from 'modules/shop';
 import { CartView } from 'modules/cart';
+import { AdministrationView } from 'modules/administration';
 import { ErrorView } from 'modules/error';
 
 const App: React.FC = () => {
@@ -31,7 +32,8 @@ const App: React.FC = () => {
                         allowExpression={isSignedIn && isAllowed}
                         fallbackRoute="/login"
                         path="/admin"
-                        exact />
+                        exact
+                        component={AdministrationView} />
                 </Switch>
             </Router>
         </div>

@@ -79,6 +79,11 @@ export interface Filter {
     searchString: string;
 }
 
+export interface Administration {
+    items: ShopItem[];
+    categories: Categories;
+}
+
 export interface FirebaseConfiguration {
     appName: string;
     config: any;
@@ -93,4 +98,5 @@ export interface ApplicationState {
     auth: AuthenticationState;
     shop: Shop;
     cart: Cart;
+    administration: Administration;
 }
