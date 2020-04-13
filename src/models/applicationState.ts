@@ -84,25 +84,6 @@ export interface FirebaseConfiguration {
     config: any;
 }
 
-export enum ApplicationLogLevel {
-    All,
-    Trace,
-    Info,
-    Warn,
-    Error,
-    Fatal
-}
-
-export interface ApplicationError {
-    message: string;
-    trace?: string;
-    level: ApplicationLogLevel;
-}
-
-export interface ErrorState {
-    error?: ApplicationError;
-}
-
 export interface ApplicationSettings {
     firebase: FirebaseConfiguration;
 }
@@ -112,5 +93,4 @@ export interface ApplicationState {
     auth: AuthenticationState;
     shop: Shop;
     cart: Cart;
-    error: ErrorState;
 }
