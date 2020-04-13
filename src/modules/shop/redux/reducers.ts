@@ -11,7 +11,7 @@ const DEFAULT_PAGINATION: Pagination = {
     lastItemPrice: undefined,
     currentPage: 1,
     totalItemCount: 0,
-    pageSize: 1
+    pageSize: 10
 };
 
 const DEFAULT_ITEMS: ShopItems = {
