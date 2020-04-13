@@ -7,8 +7,7 @@ import { Provider } from 'react-redux';
 import { authReducer } from 'modules/authentication';
 import { shopReducer } from 'modules/shop';
 import { cartReducer } from 'modules/cart';
-import { errorReducer } from 'modules/error';
-import { handleError, saveStateToCookie, readStateFromCookie } from "modules/common";
+import { handleError, saveStateToCookie, readStateFromCookie, isPromise } from "modules/common";
 
 import App from 'components/App';
 
@@ -24,9 +23,15 @@ const sessionStorage = (store: any) => (next: any) => (action: any) => {
 
 const logError = (store: any) => (next: any) => (action: any) => {
     try {
-        next(action);
+        if (!isPromise(action.payload)) {
+            next(action);
+        } else {
+            next(action).catch((err: Error) => {
+                handleError(err);
+            });
+        }
     } catch (err) {
-        handleError(err, next);
+        handleError(err);
     }
 };
 
@@ -34,8 +39,7 @@ const composeEnhancers = (window as any)['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__']
 const reducers = combineReducers({
     auth: authReducer,
     shop: shopReducer,
-    cart: cartReducer,
-    error: errorReducer
+    cart: cartReducer
 });
 
 const initialState = readStateFromCookie();

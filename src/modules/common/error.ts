@@ -1,5 +1,7 @@
-import { addError } from 'modules/error';
+import { history } from 'models';
 
-export const handleError = (err: Error, dispatch: any) => {
-    dispatch(addError(err.message, err.stack));
+export const handleError = (err: Error) => {
+    console.error(err);
+
+    history.push('/error');
 };
