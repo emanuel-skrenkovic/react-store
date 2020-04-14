@@ -25,13 +25,27 @@ export const ItemSelect: React.FC<ItemSelectProps> = ({ items, categories, onCli
     };
 
     const onClickCategory = (id: string) => {
-
         if (openCategories.includes(id)) {
             setOpenCategories(openCategories.filter(categoryId => categoryId !== id))
         } else {
             setOpenCategories([...openCategories, id]);
         }
     }
+
+    const renderItem = (item: ShopItem, contentStyle: string) => {
+        const isSelectedItem: boolean = selectedItem && selectedItem.id === item.id;
+        const buttonStyle = `ui basic ${isSelectedItem ? 'active red' : ''} button fluid borderless`;
+
+        return (
+            <div className={contentStyle} key={item.id} onClick={(e) => onSelectItem(e, item)}>
+                <button className={buttonStyle}>
+                    <div className="ui tiny left aligned text container">
+                        {item.name}
+                    </div>
+                </button>
+            </div>
+        );
+    };
 
     return (
         <div>
@@ -51,18 +65,7 @@ export const ItemSelect: React.FC<ItemSelectProps> = ({ items, categories, onCli
                             {c.name}
                         </div>
                         {categoryItems.map(i => {
-                            const isSelectedItem: boolean = selectedItem && selectedItem.id === i.id;
-                            const buttonStyle = `ui basic ${isSelectedItem ? 'active red' : ''} button fluid borderless`;
-
-                            return (
-                                <div className={contentStyle} key={i.id} onClick={(e) => onSelectItem(e, i)}>
-                                    <button className={buttonStyle}>
-                                        <div className="ui tiny left aligned text container">
-                                            {i.name}
-                                        </div>
-                                    </button>
-                                </div>
-                            );
+                            return renderItem(i, contentStyle);
                         })}
                     </div>
                 );
