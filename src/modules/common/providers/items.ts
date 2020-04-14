@@ -6,6 +6,10 @@ import { store }  from "modules/common";
 
 const ITEMS_COLLECTION = 'items';
 
+export const updateItem = async (item: ShopItem) => {
+    await store.collection(ITEMS_COLLECTION).doc(item.id).update(item);
+};
+
 export const fetchItemById = async (id: string): Promise<ShopItem> => {
     const documentData: firebase.firestore.DocumentData = await store.collection(ITEMS_COLLECTION)
         .doc(id)
