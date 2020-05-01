@@ -10,8 +10,7 @@ const DEFAULT_FILTER: Filter = {
 
 const DEFAULT_PAGINATION: Pagination = {
     currentPage: 1,
-    // pageSize: 10
-    pageSize: 1,
+    pageSize: 10,
     direction: PaginationDirection.Forward
 };
 
