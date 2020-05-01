@@ -88,6 +88,10 @@ export interface Filter {
     searchString: string;
 }
 
+export interface Notification extends IndexedEntity {
+    message: string;
+}
+
 export interface FirebaseConfiguration {
     appName: string;
     config: any;
