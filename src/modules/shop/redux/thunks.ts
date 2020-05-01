@@ -1,6 +1,7 @@
 import { ThunkDispatch } from "redux-thunk";
 
-import { Filter, Pagination, ApplicationState, ShopItems, Category, Categories, } from 'models';
+import { Filter, Pagination, ApplicationState, ShopItem, ShopItems, Category, Categories, } from 'models';
+import { convertArrayToMap } from 'modules/common';
 import { fetchItemById, filterItems } from 'modules/common/providers/items';
 import { fetchCategoryById, fetchCategories } from 'modules/common/providers/categories';
 import {
@@ -9,7 +10,7 @@ import {
     getCategories,
     getItem,
     getItems,
-    shopPaginationSelector
+    shopItemsSelector
 } from 'modules/shop'
 
 export const attemptGetItem = (itemId: string) =>
@@ -19,35 +20,20 @@ export const attemptGetItem = (itemId: string) =>
         dispatch(getItem(item));
     };
 
-export const attemptGetNextItemPage = () =>
-    async (dispatch: ThunkDispatch<ApplicationState, any, ShopAction>, getState: () => ApplicationState) => {
-        const { filter } = getState().shop;
-        const pagination = shopPaginationSelector(getState());
-        const { currentPage, pageSize, totalItemCount } = pagination;
+export const attemptGetItems = (filter: Filter, pagination: Pagination, cursor: any = undefined) =>
+    async (dispatch: ThunkDispatch<ApplicationState, void, ShopAction>, getState: () => ApplicationState) => {
+        const currentItems = shopItemsSelector(getState());
 
-        if ((currentPage + 1) * pageSize > totalItemCount) {
-            return;
-        }
+        const itemsArr: ShopItem[] = Object.values(currentItems.items);
 
-        dispatch(attemptGetItems(filter, pagination, 'forward'));
-    };
+        const { sortBy } = filter;
+        const { direction } = pagination;
 
-export const attemptGetPreviousItemPage = () =>
-    async (dispatch: ThunkDispatch<ApplicationState, any, ShopAction>, getState: () => ApplicationState) => {
-        const { filter } = getState().shop;
-        const pagination = shopPaginationSelector(getState());
-        const { currentPage } = pagination;
+        const cursor: any = (itemsArr && itemsArr.length > 0)
+            ? itemsArr[itemsArr.length - 1][sortBy]
+            : undefined;
 
-        if (currentPage === 1) {
-            return;
-        }
-
-        dispatch(attemptGetItems(filter, pagination, 'backwards'));
-    };
-
-export const attemptGetItems = (filter: Filter, pagination: Pagination, direction: string = 'forward') =>
-    async (dispatch: ThunkDispatch<ApplicationState, void, ShopAction>) => {
-        const items: ShopItems = await filterItems(filter, pagination, direction);;
+        const items: ShopItems = await filterItems(filter, pagination, cursor, direction);
 
         dispatch(getItems(items));
     };
@@ -61,10 +47,7 @@ export const attemptGetCategory = (categoryId: string) =>
 
 export const attemptGetCategories = () => async (dispatch: ThunkDispatch<ApplicationState, void, ShopAction>) => {
     const categories: Category[] = await fetchCategories();
+    const categoriesMap: Categories = convertArrayToMap(categories);
 
-    const categoriesDict: Categories = categories.reduce<Categories>((acc, x) => {
-        return { ...acc, [x.id]: x };
-    }, {});
-
-    dispatch(getCategories(categoriesDict));
+    dispatch(getCategories(categoriesMap));
 };

@@ -1,8 +1,8 @@
 import * as firebase from "firebase/app";
 import 'firebase/firestore';
 
-import { Pagination, SortOrder, Filter, ShopItem, ShopItems } from 'models';
-import { store }  from "modules/common";
+import {Filter, Pagination, PaginationDirection, ShopItem, ShopItems, SortOrder} from 'models';
+import {convertArrayToMap, mapToIndexedEntities, store} from "modules/common";
 
 const ITEMS_COLLECTION = 'items';
 
@@ -17,62 +17,44 @@ export const fetchItemById = async (id: string): Promise<ShopItem> => {
 export const fetchItems = async (): Promise<ShopItem[]> => {
     const documents = await store.collection(ITEMS_COLLECTION).get();
 
-    return documents.docs.map(
-        (doc: firebase.firestore.QueryDocumentSnapshot) => { return { ...doc.data(), id: doc.id }}) as ShopItem[];
+    return mapToIndexedEntities<ShopItem>(documents.docs);
 };
 
-export const filterItems = async (filter: Filter, pagination: Pagination, direction: string = 'forward'): Promise<ShopItems> => {
-    let documentData: firebase.firestore.DocumentData = store.collection(ITEMS_COLLECTION);
+export const filterItems = async (
+    filter: Filter,
+    pagination: Pagination,
+    cursor: any = undefined,
+    direction: PaginationDirection): Promise<ShopItems> => {
+    let query: firebase.firestore.DocumentData = store.collection(ITEMS_COLLECTION);
 
-    const { searchString, category, sortOrder } = filter;
+    const { searchString, category, sortBy, sortOrder } = filter;
 
     if (searchString) {
-        documentData = documentData.where('name', '==', searchString); // TODO: need to implement LIKE instead of equals
+        query = query.where('name', '==', searchString); // TODO: need to implement LIKE instead of equals
     }
 
     if (category) {
-        documentData = documentData.where('category', '==', category);
+        query = query.where('category', '==', category);
     }
 
-    const queryDirection: string = sortOrder === SortOrder.PriceHighest ? 'desc' : 'asc';
-    documentData = documentData.orderBy('price', queryDirection);
+    query = query.orderBy(sortBy, sortOrder === SortOrder.Descending ? 'desc' : 'asc');
 
-    const { currentPage, pageSize, lastItemPrice } = pagination;
+    const { pageSize } = pagination;
 
-    let nextCurrentPage = currentPage;
-    if (lastItemPrice) {
-        if (direction === 'forward') {
-            documentData = documentData.startAfter(lastItemPrice);
-            nextCurrentPage = nextCurrentPage + 1;
-        } else {
-            documentData = documentData.endBefore(lastItemPrice);
-            nextCurrentPage = nextCurrentPage - 1;
-        }
+    if (cursor) {
+        query = direction === PaginationDirection.Forward ? query.startAfter(cursor) : query.endBefore(cursor);
     }
 
-    documentData = documentData.limit(pageSize);
+    query = query.limit(pageSize);
 
-    const documents = await documentData.get();
+    const documents = await query.get();
 
-    const items = documents.docs.map(
-        (doc: firebase.firestore.QueryDocumentSnapshot) => { return { ...doc.data(), id: doc.id }}) as ShopItem[];
+    const items: ShopItem[] = mapToIndexedEntities<ShopItem>(documents.docs);
 
     const metadata = await store.collection('metadata').doc('items').get();
     const data = metadata.data();
 
-    let count: number = 0;
-    if (data) {
-        count = data.count as number;
-    }
+    const count: number = (data && data.count) || 0;
 
-    const lastItem = items[items.length - 1];
-
-    const newPagination = {
-        lastItemPrice: lastItem ? lastItem.price : undefined,
-        totalItemCount: count,
-        pageSize: pageSize,
-        currentPage: nextCurrentPage
-    } as Pagination;
-
-    return { items: items, pagination: newPagination };
+    return { items: convertArrayToMap(items), totalItemCount: count };
 };

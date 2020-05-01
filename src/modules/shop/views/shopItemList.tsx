@@ -14,8 +14,7 @@ export interface ShopItemListProps {
     items: ShopItem[];
 }
 
-export const ShopItemList: React.FC<ShopItemListProps> = (props: ShopItemListProps) => {
-    const { items } = props;
+export const ShopItemList: React.FC<ShopItemListProps> = ({ items }) => {
     const dispatch = useDispatch();
 
     const [statuses, setStatuses] = useState([] as Status[]);

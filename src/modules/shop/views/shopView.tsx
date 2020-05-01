@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 
-import { Category, Filter } from 'models';
+import { Category, Filter, PaginationDirection } from 'models';
 import { Pager } from 'modules/common';
 import {
     ShopFilter,
@@ -9,16 +9,17 @@ import {
     useShop,
     useShopFilter,
     updateShopFilter,
-    attemptGetNextItemPage,
-    attemptGetPreviousItemPage
+    updateShopPagination
 } from 'modules/shop';
 
 export const ShopView: React.FC = () => {
     const [filter, pagination] = useShopFilter();
     const [categories, items] = useShop(filter, pagination);
 
+    const { totalItemCount } = items;
+
     const categoriesArr: Category[] = Object.values(categories);
-    const { currentPage, pageSize, totalItemCount } = pagination;
+    const { currentPage, pageSize } = pagination;
 
     const dispatch = useDispatch();
 
@@ -27,11 +28,27 @@ export const ShopView: React.FC = () => {
     };
 
     const onClickNextPage = () => {
-        dispatch(attemptGetNextItemPage());
+        if ((currentPage + 1) * pageSize > totalItemCount) {
+            return;
+        }
+
+        dispatch(updateShopPagination({
+            ...pagination,
+            currentPage: currentPage + 1,
+            direction: PaginationDirection.Forward
+        }));
     };
 
     const onClickPreviousPage = () => {
-        dispatch(attemptGetPreviousItemPage());
+        if (currentPage === 1) {
+            return;
+        }
+
+        dispatch(updateShopPagination({
+            ...pagination,
+            currentPage: currentPage - 1,
+            direction: PaginationDirection.Backward
+        }));
     };
 
     return (
@@ -44,7 +61,7 @@ export const ShopView: React.FC = () => {
                         onSubmit={onFilterSubmit} />
                 </div>
                 <div className="row">
-                    <ShopItemList items={items} />
+                    <ShopItemList items={Object.values(items.items)} />
                 </div>
                 <Pager
                     currentPage={currentPage}

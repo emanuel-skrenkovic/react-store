@@ -1,4 +1,4 @@
-import { ShopItem, ShopItems, Category, Categories, Filter, history } from 'models';
+import { ShopItem, ShopItems, Category, Categories, Filter, Pagination, history } from 'models';
 
 export const GET_CATEGORY = 'GET_CATEGORY';
 export const GET_CATEGORIES = 'GET_CATEGORIES';
@@ -32,12 +32,18 @@ export interface UpdateShopFilterAction {
     payload: Filter;
 }
 
+export interface UpdateShopPaginationAction {
+    type: typeof UPDATE_SHOP_PAGINATION;
+    payload: Pagination;
+}
+
 export type ShopAction =
     GetCategoryAction
     | GetCategoriesAction
     | GetItemAction
     | GetItemsAction
-    | UpdateShopFilterAction;
+    | UpdateShopFilterAction
+    | UpdateShopPaginationAction;
 
 export const getCategory = (category: Category): GetCategoryAction => {
     return { type: GET_CATEGORY, payload: category };
@@ -60,3 +66,7 @@ export const updateShopFilter = (filter: Filter): UpdateShopFilterAction => {
 
     return { type: UPDATE_SHOP_FILTER, payload: filter };
 };
+
+export const updateShopPagination = (pagination: Pagination): UpdateShopPaginationAction => {
+    return { type: UPDATE_SHOP_PAGINATION, payload: pagination };
+}

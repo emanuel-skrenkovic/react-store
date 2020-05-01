@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { ShopItem, Categories, Filter, Pagination } from "models";
+import { ShopItems, Categories, Filter, Pagination } from "models";
 import {
     attemptGetCategories,
     attemptGetItems,
@@ -12,19 +12,15 @@ import {
 } from 'modules/shop';
 
 export const useShop = (filter: Filter, pagination: Pagination): Array<any> => {
-    const items: ShopItem[] = useSelector(shopItemsSelector);
+    const items: ShopItems = useSelector(shopItemsSelector);
     const categories: Categories = useSelector(shopCategoriesSelector);
 
     const dispatch = useDispatch();
 
     useEffect(() => {
-        // Remove cursor from pagination on changing filter as changing filter
-        // resets the page to the first one.
-        const newPagination = { ...pagination, currentPage: 1, lastItemPrice: undefined }
-
-        dispatch(attemptGetItems(filter, newPagination));
+        dispatch(attemptGetItems(filter, pagination));
         dispatch(attemptGetCategories());
-    }, [dispatch, filter]);
+    }, [dispatch, filter, pagination]);
 
     return [categories, items];
 };

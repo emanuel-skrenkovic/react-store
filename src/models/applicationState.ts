@@ -37,9 +37,9 @@ export interface Categories extends Dictionary<string, Category> { }
 
 export interface Shop {
     categories: Categories
-    items: ShopItems;
+    shopItems: ShopItems;
     filter: Filter;
-    // pagination: Pagination;
+    pagination: Pagination;
 }
 
 export interface CartItem {
@@ -55,26 +55,35 @@ export interface Cart {
 }
 
 export enum SortOrder {
-    PriceLowest = 'PriceLowest',
-    PriceHighest = 'PriceHighest'
+    Ascending,
+    Descending
+}
+
+export enum PaginationDirection {
+    Forward,
+    Backward
 }
 
 export interface Pagination {
-    // Really don't like this solution for cursor-based paging.
-    // The applications state should not know about the API it uses.
-    lastItemPrice?: number;
     currentPage: number;
     pageSize: number;
-    totalItemCount: number;
+    direction: PaginationDirection;
 }
 
 export interface ShopItems {
-   items: ShopItem[];
-   pagination: Pagination;
+    items: Dictionary<string, ShopItem>;
+    totalItemCount: number;
+}
+
+export enum ItemSortCriterion {
+    Price = 'price',
+    Name = 'name',
+    Category = 'category'
 }
 
 export interface Filter {
     sortOrder: SortOrder;
+    sortBy: ItemSortCriterion;
     category: string;
     searchString: string;
 }

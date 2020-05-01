@@ -17,7 +17,7 @@ export const ShopFilter: React.FC<ShopFilterProps> =
     const onSortOrderChanged = (e: ChangeEvent<HTMLSelectElement>) => {
         e.preventDefault();
 
-        const selectedSortOrder: SortOrder = SortOrder[e.currentTarget.value as keyof typeof SortOrder];
+        const selectedSortOrder = Number(e.currentTarget.value) as SortOrder;
         setSortOrder(selectedSortOrder);
 
         onSubmit({ ...initialFilter, sortOrder: selectedSortOrder });
@@ -40,8 +40,8 @@ export const ShopFilter: React.FC<ShopFilterProps> =
                     className="ui selection dropdown"
                     value={sortOrder}
                     onChange={onSortOrderChanged}>
-                    <option value={SortOrder.PriceLowest}>Price: Lowest</option>
-                    <option value={SortOrder.PriceHighest}>Price: Highest</option>
+                    <option value={SortOrder.Ascending}>Price: Lowest</option>
+                    <option value={SortOrder.Descending}>Price: Highest</option>
                 </select>
             </div>
             <div className="item">

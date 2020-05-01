@@ -2,13 +2,11 @@ import React from 'react';
 
 import { ShopItem } from 'models';
 
-export interface ShopItemDetailProps {
+export interface ShopItemDetailProps extends React.PropsWithChildren<any> {
     item: ShopItem
 }
 
-export const ShopItemDetail: React.FC<ShopItemDetailProps> = (props: React.PropsWithChildren<ShopItemDetailProps>) => {
-    const { item, children } = props;
-
+export const ShopItemDetail: React.FC<ShopItemDetailProps> = ({ item, children }) => {
     return (
         <div className="item ui grid" key={item.id}>
             {item.name}
