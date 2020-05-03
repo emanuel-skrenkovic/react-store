@@ -24,6 +24,7 @@ export const ShopView: React.FC = () => {
     const dispatch = useDispatch();
 
     const onFilterSubmit = (filter: Filter) => {
+        dispatch(updateShopPagination({ currentPage: 1, pageSize: pagination.pageSize }));
         dispatch(updateShopFilter(filter));
     };
 

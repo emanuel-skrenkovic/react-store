@@ -1,4 +1,4 @@
-import { Shop, Filter, Pagination, ShopItems, PaginationDirection, ItemSortCriterion, SortOrder } from 'models';
+import { Shop, Filter, Pagination, ShopItems, ItemSortCriterion, SortOrder } from 'models';
 import { GET_CATEGORIES, GET_ITEMS, UPDATE_SHOP_FILTER, UPDATE_SHOP_PAGINATION, ShopAction } from 'modules/shop';
 
 const DEFAULT_FILTER: Filter = {
@@ -10,8 +10,7 @@ const DEFAULT_FILTER: Filter = {
 
 const DEFAULT_PAGINATION: Pagination = {
     currentPage: 1,
-    pageSize: 10,
-    direction: PaginationDirection.Forward
+    pageSize: 10
 };
 
 const DEFAULT_ITEMS = {

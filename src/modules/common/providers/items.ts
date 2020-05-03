@@ -24,7 +24,7 @@ export const filterItems = async (
     filter: Filter,
     pagination: Pagination,
     cursor: any = undefined,
-    direction: PaginationDirection): Promise<ShopItems> => {
+    direction?: PaginationDirection): Promise<ShopItems> => {
     let query: firebase.firestore.DocumentData = store.collection(ITEMS_COLLECTION);
 
     const { searchString, category, sortBy, sortOrder } = filter;
@@ -41,7 +41,7 @@ export const filterItems = async (
 
     const { pageSize } = pagination;
 
-    if (cursor) {
+    if (cursor && direction !== null && direction !== undefined) {
         query = direction === PaginationDirection.Forward ? query.startAfter(cursor) : query.endBefore(cursor);
     }
 

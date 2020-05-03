@@ -67,7 +67,7 @@ export enum PaginationDirection {
 export interface Pagination {
     currentPage: number;
     pageSize: number;
-    direction: PaginationDirection;
+    direction?: PaginationDirection;
 }
 
 export interface ShopItems {
