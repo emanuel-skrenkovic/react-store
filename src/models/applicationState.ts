@@ -50,6 +50,7 @@ export interface CartItem {
 export interface CartItems extends Dictionary<string, CartItem> { }
 
 export interface Cart {
+    visible: boolean;
     items: CartItems;
     totalCost: number;
 }

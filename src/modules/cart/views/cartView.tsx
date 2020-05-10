@@ -1,61 +1,31 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
-import { ApplicationState, CartItem } from 'models';
-import { ShopItemDetail } from 'modules/shop';
-import { attemptRemoveItem } from 'modules/cart';
+import { CartItem } from 'models';
+import { selectCart, CartItemList } from 'modules/cart';
 
 export const CartView: React.FC = () => {
-    const { items, totalCost } = useSelector((state: ApplicationState) => state.cart);
+    const { items, totalCost } = useSelector(selectCart);
     const itemsArr: CartItem[] = Object.values(items);
 
-    const dispatch = useDispatch();
-
-    const onClickRemoveFromCart = (id: string) => {
-        dispatch(attemptRemoveItem(id));
-    };
-
-    const onClickCheckOut = () => {
+    const onClickCheckout = () => {
         console.log('checkout');
     };
 
-    const renderItems = () => {
-        if (!itemsArr) {
-            return null;
-        }
-
-        return (
-            <div className="ui celled list">
-                {itemsArr.map(i => {
-                    const { item, count } = i;
-                    return (
-                        <ShopItemDetail key={item.id} item={item}>
-                            <div className="item right floated">
-                                No.: {count}.
-                            </div>
-                            <div className="item right floated">
-                                Cost of items: {item.price * count}.
-                            </div>
-                            <div className="item right floated">
-                                <button className="ui button" onClick={() => onClickRemoveFromCart(item.id)}>Remove from cart</button>
-                            </div>
-                        </ShopItemDetail>
-                    );
-                })}
-            </div>
-        );
-    };
+    const buttonStyle = `ui teal labeled ${(itemsArr && itemsArr.length > 0) ? '' : 'disabled'} icon button`;
 
     return (
         <div className="ui container">
-            {renderItems()}
-            <div className="ui left action input">
-                <button className="ui teal labeled icon button" onClick={() => onClickCheckOut()}>
+            <CartItemList items={Object.values(items)} />
+            <div className="ui container bottom-aligned">
+                <h3 className="">
+                    ${totalCost}
+                </h3>
+                <button className={buttonStyle} onClick={onClickCheckout}>
                     <i className="cart icon"/>
                     Checkout
                 </button>
-                <input type="text" readOnly value={totalCost} />
             </div>
         </div>
-    );
+    )
 };

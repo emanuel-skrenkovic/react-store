@@ -3,13 +3,15 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
 
 import { selectAuthInfo, selectIsAdmin, attemptSignOut } from 'modules/authentication';
-import { selectCartItemCount } from 'modules/cart';
+import { expandCart, collapseCart, selectCartItemCount, selectCartVisible } from 'modules/cart';
 import { useShopFilter, updateShopFilter } from 'modules/shop';
 
 export const Header: React.FC = () => {
     const { isSignedIn, user } = useSelector(selectAuthInfo);
     const { username } = user || {};
     const isAdmin = useSelector(selectIsAdmin);
+
+    const cartVisible = useSelector(selectCartVisible);
     const cartItemCount = useSelector(selectCartItemCount);
 
     const [filter] = useShopFilter();
@@ -53,11 +55,20 @@ export const Header: React.FC = () => {
         dispatch(updateShopFilter({ ...filter, searchString: searchTerm }));
     };
 
+    const onClickCart = () => {
+        if (cartVisible) {
+            dispatch(collapseCart());
+        } else {
+            dispatch(expandCart());
+        }
+    };
+
     return (
         <div className="ui tabular menu">
             <span className="item">Hi!&nbsp;{renderAuth()}</span>
             <Link className={`${setActiveTab('/home') || setActiveTab('/')} item`} to="/home">Home</Link>
             <Link className={`${setActiveTab('/listing')} item`} to="/listing">Listing</Link>
+            <Link className={`${setActiveTab('/cart')} item`} to="/cart">Cart</Link>
             <Link className={`${setActiveTab('/faq')} item`} to="/faq">FAQ</Link>
             {isAdmin && <Link to="/admin" className={getTabStyle('/admin')}>Administration</Link>}
             <div className="item">
@@ -71,11 +82,13 @@ export const Header: React.FC = () => {
                     <i className="circular search link icon" />
                 </div>
             </div>
-            <Link to="/cart" className={`${setActiveTab('/cart')} right item`}>
-                {cartItemCount > 0 &&
-                <div className="ui teal right pointing label">{cartItemCount}</div>}
-                Cart
-            </Link>
+            <div className="right item">
+                <button className="ui icon button" onClick={onClickCart}>
+                    <i className="shopping cart icon" />
+                    {cartItemCount > 0 &&
+                        <div className="ui teal right pointing label">{cartItemCount}</div>}
+                </button>
+            </div>
             {isSignedIn
                 ? <button className="item" onClick={() => dispatch(attemptSignOut())}>Sign Out</button>
                 : null}
