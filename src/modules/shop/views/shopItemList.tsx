@@ -19,7 +19,9 @@ export const ShopItemList: React.FC<ShopItemListProps> = ({ items }) => {
 
     const [statuses, setStatuses] = useState([] as Status[]);
 
-    const onClickAddToCart = (item: ShopItem) => {
+    const onClickAddToCart = (e: React.FormEvent<HTMLFormElement>, item: ShopItem) => {
+        e.preventDefault();
+
         const id: number = statuses.length + 1; // TODO: check if safe
 
         const status = {
@@ -48,12 +50,22 @@ export const ShopItemList: React.FC<ShopItemListProps> = ({ items }) => {
             <div className="ui celled list">
                 {items.map(i => {
                     return (
-                        <ShopItemDetail key={i.id} item={i}>
-                            <div className="item right floated ">
-                                <button className="ui button" onClick={() => onClickAddToCart(i)}>Add to Cart</button>
-                                <input className="ui small input" type="number" />
+                        <div className="item">
+                            <div className="ui grid">
+                                <div className="row">
+                                    <div className="thirteen wide column">
+                                        <ShopItemDetail key={i.id} item={i} />
+                                    </div>
+                                    <div className="three wide column">
+                                        <form className="ui form" action="" onClick={(e) => onClickAddToCart(e, i)}>
+                                            <button className="ui button" >Add to Cart</button>
+                                            <input className="ui small input" type="number" />
+                                        </form>
+                                    </div>
+                                </div>
+
                             </div>
-                        </ShopItemDetail>
+                        </div>
                     );
                 })}
                 <div className="ui container">

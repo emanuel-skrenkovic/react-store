@@ -1,9 +1,10 @@
-import { omit, has } from 'lodash';
+import {has, omit} from 'lodash';
 
-import { Cart, CartItem, CartItems, ShopItem } from 'models';
-import { CartAction, ADD_ITEM, REMOVE_ITEM } from 'modules/cart';
+import {Cart, CartItem, CartItems, ShopItem} from 'models';
+import {ADD_ITEM, CartAction, COLLAPSE_CART, EXPAND_CART, REMOVE_ITEM} from 'modules/cart';
 
 const INITIAL_STATE: Cart = {
+    visible: false,
     items: {},
     totalCost: 0
 };
@@ -53,6 +54,12 @@ export const cartReducer = (state: Cart = INITIAL_STATE,  action: CartAction): C
 
             return { ...state, totalCost: getTotalCost(newItems), items: newItems };
         }
+
+        case EXPAND_CART:
+            return { ...state, visible: true };
+
+        case COLLAPSE_CART:
+            return { ...state, visible: false };
 
         default:
             return state;

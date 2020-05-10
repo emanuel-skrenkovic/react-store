@@ -8,11 +8,21 @@ export interface ShopItemDetailProps extends React.PropsWithChildren<any> {
 
 export const ShopItemDetail: React.FC<ShopItemDetailProps> = ({ item, children }) => {
     return (
-        <div className="item ui grid" key={item.id}>
-            {item.name}
-            {children}
-            <div className="item right floated">
-                {item.price}
+        <div className="item">
+            <div className="image">
+                <img alt="item_image" />
+            </div>
+            <div className="content">
+                <div className="header">
+                    {item.name}
+                </div>
+                <div className="description">
+                    Lorem ipsum
+                </div>
+            </div>
+            <div className="extra">
+                ${item.price}
+                {children}
             </div>
         </div>
     );

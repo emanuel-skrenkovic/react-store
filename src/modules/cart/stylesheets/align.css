@@ -1,0 +1,11 @@
+.flex-container {
+    display: flex;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.bottom-aligned {
+    margin: 15px;
+    position: absolute;
+    bottom: 0;
+}

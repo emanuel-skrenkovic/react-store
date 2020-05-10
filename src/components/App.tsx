@@ -2,22 +2,25 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Router, Switch, Route } from 'react-router-dom';
 
-import { history } from 'models/history';
-import { Header, ProtectedRoute } from 'modules/navigation';
 import { SignInView, RegisterView, selectAuthInfo } from 'modules/authentication';
-import { ShopView } from 'modules/shop';
-import { CartView } from 'modules/cart';
+import { CartView, CartSidebar, selectCartVisible } from 'modules/cart';
+import { Header, ProtectedRoute } from 'modules/navigation';
 import { ErrorView } from 'modules/error';
+import { history } from 'models/history';
+import { ShopView } from 'modules/shop';
 
 const App: React.FC = () => {
     const { isSignedIn } = useSelector(selectAuthInfo);
+
+    const cartVisible: boolean = useSelector(selectCartVisible);
 
     // TODO
     const isAllowed = true;
 
     return (
         <div>
-            <Router history={history} >
+            {cartVisible && <CartSidebar/>}
+            <Router history={history}>
                 <Route path="/" component={Header} />
                 <Switch>
                     <Route path="/home" />
