@@ -3,5 +3,5 @@ export * from './firebase';
 export * from './items';
 export * from './categories';
 export * from './cart';
-export * from './cookie';
+export * from './localStorage';
 export * from './helpers';

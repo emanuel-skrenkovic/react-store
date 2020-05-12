@@ -17,7 +17,7 @@ export const CartView: React.FC = () => {
     return (
         <div className="ui container">
             <CartItemList items={Object.values(items)} />
-            <div className="ui container bottom-aligned">
+            <div className="ui container">
                 <h3 className="">
                     ${totalCost}
                 </h3>
