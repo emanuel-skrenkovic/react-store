@@ -4,7 +4,7 @@ import { Link, useLocation } from 'react-router-dom';
 
 import { selectAuthInfo, selectIsAdmin, attemptSignOut } from 'modules/authentication';
 import { expandCart, collapseCart, selectCartItemCount, selectCartVisible } from 'modules/cart';
-import { useShopFilter, updateShopFilter } from 'modules/shop';
+import { updateShopFilter, shopFilterSelector } from 'modules/shop';
 
 export const Header: React.FC = () => {
     const { isSignedIn, user } = useSelector(selectAuthInfo);
@@ -14,7 +14,7 @@ export const Header: React.FC = () => {
     const cartVisible = useSelector(selectCartVisible);
     const cartItemCount = useSelector(selectCartItemCount);
 
-    const [filter] = useShopFilter();
+    const filter = useSelector(shopFilterSelector);
     const [searchTerm, setSearchTerm] = useState('');
 
     const dispatch = useDispatch();

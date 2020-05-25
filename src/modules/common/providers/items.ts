@@ -1,7 +1,7 @@
 import * as firebase from "firebase/app";
 import 'firebase/firestore';
 
-import {Filter, Pagination, PaginationDirection, ShopItem, ShopItems, SortOrder} from 'models';
+import { Filter, PaginationDirection, ShopItem, ShopItems, SortOrder } from 'models';
 import {convertArrayToMap, mapToIndexedEntities, store} from "modules/common";
 
 const ITEMS_COLLECTION = 'items';
@@ -22,12 +22,12 @@ export const fetchItems = async (): Promise<ShopItem[]> => {
 
 export const filterItems = async (
     filter: Filter,
-    pagination: Pagination,
+    // pagination: Pagination,
     cursor: any = undefined,
     direction?: PaginationDirection): Promise<ShopItems> => {
     let query: firebase.firestore.DocumentData = store.collection(ITEMS_COLLECTION);
 
-    const { searchString, category, sortBy, sortOrder } = filter;
+    const { searchString, category, sortBy, sortOrder, pageSize } = filter;
 
     if (searchString) {
         query = query.where('name', '==', searchString); // TODO: need to implement LIKE instead of equals
@@ -39,13 +39,13 @@ export const filterItems = async (
 
     query = query.orderBy(sortBy, sortOrder === SortOrder.Descending ? 'desc' : 'asc');
 
-    const { pageSize } = pagination;
+    // const { pageSize } = pagination;
 
     if (cursor && direction !== null && direction !== undefined) {
         query = direction === PaginationDirection.Forward ? query.startAfter(cursor) : query.endBefore(cursor);
     }
 
-    query = query.limit(pageSize);
+    query = query.limit(Number(pageSize));
 
     const documents = await query.get();
 

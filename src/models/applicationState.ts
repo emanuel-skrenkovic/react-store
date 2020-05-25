@@ -40,6 +40,7 @@ export interface Shop {
     shopItems: ShopItems;
     filter: Filter;
     pagination: Pagination;
+    queryString?: string;
 }
 
 export interface CartItem {
@@ -87,6 +88,9 @@ export interface Filter {
     sortBy: ItemSortCriterion;
     category: string;
     searchString: string;
+    page: number;
+    pageSize: number;
+    direction?: PaginationDirection;
 }
 
 export interface FirebaseConfiguration {

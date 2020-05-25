@@ -1,6 +1,6 @@
 import { ThunkDispatch } from "redux-thunk";
 
-import { Filter, Pagination, ApplicationState, ShopItem, ShopItems, Category, Categories, } from 'models';
+import { Filter, ApplicationState, ShopItem, ShopItems, Category, Categories, } from 'models';
 import { convertArrayToMap } from 'modules/common';
 import { fetchItemById, filterItems } from 'modules/common/providers/items';
 import { fetchCategoryById, fetchCategories } from 'modules/common/providers/categories';
@@ -20,20 +20,19 @@ export const attemptGetItem = (itemId: string) =>
         dispatch(getItem(item));
     };
 
-export const attemptGetItems = (filter: Filter, pagination: Pagination, cursor: any = undefined) =>
+export const attemptGetItems = (filter: Filter, cursor: any = undefined) =>
     async (dispatch: ThunkDispatch<ApplicationState, void, ShopAction>, getState: () => ApplicationState) => {
         const currentItems = shopItemsSelector(getState());
 
         const itemsArr: ShopItem[] = Object.values(currentItems.items);
 
-        const { sortBy } = filter;
-        const { direction } = pagination;
+        const { sortBy, direction } = filter;
 
         const cursor: any = (itemsArr && itemsArr.length > 0)
             ? itemsArr[itemsArr.length - 1][sortBy]
             : undefined;
 
-        const items: ShopItems = await filterItems(filter, pagination, cursor, direction);
+        const items: ShopItems = await filterItems(filter, cursor, direction);
 
         dispatch(getItems(items));
     };

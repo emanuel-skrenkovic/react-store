@@ -1,55 +1,70 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import qs from 'query-string';
+import * as _ from 'lodash';
 
-import { Category, Filter, PaginationDirection } from 'models';
+import { history, Category, Filter, PaginationDirection } from 'models';
 import { Pager } from 'modules/common';
 import {
     ShopFilter,
     ShopItemList,
+    attemptGetItems,
     useShop,
-    useShopFilter,
-    updateShopFilter,
-    updateShopPagination
+    useFilter,
+    shopFilterSelector
 } from 'modules/shop';
 
 export const ShopView: React.FC = () => {
-    const [filter, pagination] = useShopFilter();
-    const [categories, items] = useShop(filter, pagination);
+    const filter: Filter = useSelector(shopFilterSelector);
+
+    useFilter('/listing', filter, attemptGetItems);
+    const [categories, items] = useShop(filter);
 
     const { totalItemCount } = items;
 
     const categoriesArr: Category[] = Object.values(categories);
-    const { currentPage, pageSize } = pagination;
-
-    const dispatch = useDispatch();
+    const { page, pageSize } = filter;
 
     const onFilterSubmit = (filter: Filter) => {
-        dispatch(updateShopPagination({ currentPage: 1, pageSize: pagination.pageSize }));
-        dispatch(updateShopFilter(filter));
+        const queryString = '/listing?' + qs.stringify(_.pickBy(filter));
+
+        // Set the filter as the query string - the location listener
+        // will update state with the correct filter
+        history.push(queryString);
     };
 
     const onClickNextPage = () => {
-        if ((currentPage + 1) * pageSize > totalItemCount) {
+        const nextPage = page + 1;
+
+        if (nextPage * pageSize > totalItemCount) {
             return;
         }
 
-        dispatch(updateShopPagination({
-            ...pagination,
-            currentPage: currentPage + 1,
+        const queryObject: Filter = {
+            ...filter,
+            page: nextPage,
             direction: PaginationDirection.Forward
-        }));
+        } as Filter;
+
+        const queryString: string = '/listing?' + qs.stringify(queryObject);
+
+        history.push(queryString);
     };
 
     const onClickPreviousPage = () => {
-        if (currentPage === 1) {
+        if (page === 1) {
             return;
         }
 
-        dispatch(updateShopPagination({
-            ...pagination,
-            currentPage: currentPage - 1,
+        const queryObject: Filter = {
+            ...filter,
+            page: page - 1,
             direction: PaginationDirection.Backward
-        }));
+        } as Filter;
+
+        const queryString: string = '/listing?' + qs.stringify(queryObject);
+
+        history.push(queryString);
     };
 
     return (
@@ -65,7 +80,7 @@ export const ShopView: React.FC = () => {
                     <ShopItemList items={Object.values(items.items)} />
                 </div>
                 <Pager
-                    currentPage={currentPage}
+                    currentPage={page}
                     pageSize={pageSize}
                     totalItemCount={totalItemCount}
                     onClickNext={onClickNextPage}

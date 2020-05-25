@@ -1,11 +1,20 @@
 import { Shop, Filter, Pagination, ShopItems, ItemSortCriterion, SortOrder } from 'models';
-import { GET_CATEGORIES, GET_ITEMS, UPDATE_SHOP_FILTER, UPDATE_SHOP_PAGINATION, ShopAction } from 'modules/shop';
+import {
+    GET_CATEGORIES,
+    GET_ITEMS,
+    UPDATE_SHOP_FILTER,
+    UPDATE_SHOP_PAGINATION,
+    UPDATE_QUERY_STRING,
+    ShopAction
+} from 'modules/shop';
 
 const DEFAULT_FILTER: Filter = {
     sortOrder: SortOrder.Ascending,
     sortBy: ItemSortCriterion.Price,
     category: '',
-    searchString: ''
+    searchString: '',
+    page: 1,
+    pageSize: 10
 };
 
 const DEFAULT_PAGINATION: Pagination = {
@@ -38,6 +47,9 @@ export const shopReducer = (state: Shop = INITIAL_STATE, action: ShopAction): Sh
 
         case UPDATE_SHOP_PAGINATION:
             return { ...state, pagination: action.payload };
+
+        case UPDATE_QUERY_STRING:
+            return { ...state, queryString: action.payload };
 
         default:
             return state;
